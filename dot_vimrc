@@ -1,0 +1,39 @@
+" ---------
+" Basic-set
+" ---------
+
+
+
+" Leader
+let mapleader = "\<space>"
+
+" Syntax
+syntax on	" Enable syntax highlighting.
+
+" Number
+set number
+" set relativenumber
+
+" Indent
+set autoindent	" Respect indentation when starting a new line.
+set expandtab	" Expand tabs to spaces. Essential in Python.
+set tabstop=4	" Number of spaces tab is counted for.
+set shiftwidth=4	" Number of spaces to use for autoindent.
+set backspace=2	" Fix backspace behavior on most terminals.
+filetype plugin indent on	" Enable file type based indentation.
+
+" Colors
+colorscheme murphy	"Change a colorscheme.
+
+" clipboard
+set clipboard=unnamed  " copy to system's clipboard(*)
+
+
+
+"  --------
+"  Vim-Plug
+"  --------
+call plug#begin()
+
+call plug#end()
+
