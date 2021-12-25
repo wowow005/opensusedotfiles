@@ -3,6 +3,12 @@
 HISTSIZE=1000000
 SAVEHIST=1000000
 
+# PATH with doom emacs
+exprot PATH="$HOME/.emacs.d/bin":$PATH
+
+# PATH with .cargo
+export PATH="$HOME/.cargo/bin":$PATH
+
 # PATH with .local
 export PATH="$HOME/.local/bin":$PATH
 

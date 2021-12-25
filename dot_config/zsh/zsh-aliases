@@ -11,6 +11,9 @@ alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
 
+# brew
+alias brewuu='brew update && brew upgrade && brew cleanup && say "hello"'
+
 
 
 case "$(uname -s)" in

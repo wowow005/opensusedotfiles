@@ -23,7 +23,7 @@ set backspace=2	" Fix backspace behavior on most terminals.
 filetype plugin indent on	" Enable file type based indentation.
 
 " Colors
-colorscheme murphy	"Change a colorscheme.
+" colorscheme murphy	"Change a colorscheme.
 
 " clipboard
 set clipboard=unnamed  " copy to system's clipboard(*)
