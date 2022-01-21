@@ -71,6 +71,14 @@
       doom-unicode-font (font-spec :family "JuliaMono")
       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 
+(let ((font-chinese "PingFang SC"))
+  (add-hook! emacs-startup :append
+   (set-fontset-font t 'cjk-misc font-chinese nil 'prepend)
+   (set-fontset-font t 'han font-chinese nil 'prepend)
+   ;; (set-fontset-font t ?中 font-chinese nil 'prepend)
+   ;; (set-fontset-font t ?言 font-chinese nil 'prepend)
+   ))
+
 ;; Theme and modeLine
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -85,7 +93,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org/capture")
+(setq org-directory "~/MEGA/org")
 
 ;; Miscellaneous
 ;; This determines the style of line numbers in effect. If set to `nil', line
