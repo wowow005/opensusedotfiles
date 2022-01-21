@@ -33,7 +33,6 @@ set clipboard=unnamed  " copy to system's clipboard(*)
 "  --------
 "  Vim-Plug
 "  --------
-call plug#begin()
+" call plug#begin()
 
-call plug#end()
-
+" call plug#end()
