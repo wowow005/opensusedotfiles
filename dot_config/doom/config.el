@@ -95,6 +95,13 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/MEGA/org")
 
+(require 'org-download)
+
+(setq-default org-download-image-dir "./img")
+
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+
 ;; Miscellaneous
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
