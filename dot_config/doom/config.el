@@ -97,6 +97,7 @@
 
 (require 'org-download)
 
+(setq-default org-download-method 'directory)
 (setq-default org-download-image-dir "./img")
 
 ;; Drag-and-drop to `dired`
