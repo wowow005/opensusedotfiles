@@ -91,10 +91,14 @@
 (custom-set-faces!
   '(doom-modeline-buffer-modified :foreground "orange"))
 
+;; ============
+;; ORG-SETTING
+;; ============
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/MEGA/org")
 
+;; org-download
 (require 'org-download)
 
 (setq-default org-download-method 'directory)
@@ -102,6 +106,9 @@
 
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
+
+;; org-src
+(setq org-src-preserve-indentation t)
 
 ;; Miscellaneous
 ;; This determines the style of line numbers in effect. If set to `nil', line
