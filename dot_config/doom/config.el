@@ -28,8 +28,9 @@
 
 (display-time-mode 1)
 
-;; (unless (string-match-p "^Power N/A" (battery))
-;;   (display-battery-mode 1))
+(unless (equal "Battery status not available"
+               (battery))
+  (display-battery-mode 1))
 
 (global-subword-mode 1)
 
@@ -71,6 +72,7 @@
       doom-unicode-font (font-spec :family "JuliaMono")
       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 
+;; For chinese-font
 (let ((font-chinese "PingFang SC"))
   (add-hook! emacs-startup :append
    (set-fontset-font t 'cjk-misc font-chinese nil 'prepend)
@@ -110,6 +112,13 @@
 ;; org-src
 (setq org-src-preserve-indentation t)
 
+;; ;; org-elp
+;; (require 'org-elp)
+;; (setq org-elp-split-fraction 0.2)
+;; (setq org-elp-buffer-name "*Equation Live*")
+;; (setq org-elp-idle-time 0.5)
+
+
 ;; Miscellaneous
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -118,19 +127,6 @@
 ;; nicer default buffer names
 (setq doom-fallback-buffer-name "► Doom"
       +doom-dashboard-name "► Doom")
-
-
-
-;; Dashboard quick actions
-;; (map! :map +doom-dashboard-mode-map
-;;       :ne "f" #'find-file
-;;       :ne "r" #'consult-recent-file
-;;       :ne "p" #'doom/open-private-config
-;;       :ne "c" (cmd! (find-file (expand-file-name "config.org" doom-private-dir)))
-;;       :ne "." (cmd! (doom-project-find-file "~/.config/")) ; . for dotfiles
-;;       :ne "b" #'+vertico/switch-workspace-buffer
-;;       :ne "B" #'consult-buffer
-;;       :ne "q" #'save-buffers-kill-terminal)
 
 
 ;; ============
@@ -168,12 +164,6 @@
 (after! evil
   (setq evil-ex-substitute-global t
         evil-move-cursor-back nil))
-
-;; Consult
-;; Since using 3.4.9, the separation between buffers and files is already clear.
-;; (after! consult
-;;   (set-face-attribute 'consult-file nil :inherit 'consult-buffer)
-;;   (setf (plist-get (alist-get 'perl consult-async-split-styles-alist) :initial)";"))
 
 ;; Company
 (after! company

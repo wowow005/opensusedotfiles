@@ -10,10 +10,12 @@
                          ("org" . "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/org/")))
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
-;(package! some-package)
+;; (package! some-package)
 (use-package! info-colors
   :commands (info-colors-fontify-node))
 (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+
+(package! org-elp)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
