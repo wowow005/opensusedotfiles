@@ -72,3 +72,19 @@ Setting up the config to find the Org and Org Roam directories.
 #+END_SRC
 
 * UI
+
+Cleaning up the internal UI.
+
+#+BEGIN_SRC emacs-lisp
+(setq default-frame-alist
+      (append (list
+	       ;; '(font . "Roboto Mono Emacs Regular:size=14")
+	       '(min-height . 1)  '(height     . 45)
+	       '(min-width  . 1) '(width      . 81)
+               '(vertical-scroll-bars . nil)
+               '(internal-border-width . 40)
+               '(left-fringe    . 0)
+               '(right-fringe   . 0)
+               '(tool-bar-lines . 0)
+               '(menu-bar-lines . 0))))
+#+END_SRC

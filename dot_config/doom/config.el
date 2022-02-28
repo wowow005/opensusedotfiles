@@ -50,7 +50,18 @@
   :after '(evil-window-split evil-window-vsplit)
   (consult-buffer))
 
-;;Buffer defaults
+;; Indent Setting
+(setq-default  tab-width 2) ;; 表示一个 tab 4个字符宽
+(setq-default indent-tabs-mode nil) ;; nil 表示将 tab 替换成空格
+
+;; Use editorconfig
+(setq lsp-enable-indentation nil)
+(setq editorconfig-mode 1)
+
+;; Use YASnippet
+;; (yas-reload-all)
+;; (add-hook 'prog-mode-hook #'yas-minor-mode)
+
 
 ;; ==================
 ;; Doom Configuration
@@ -111,6 +122,14 @@
 
 ;; org-src
 (setq org-src-preserve-indentation t)
+
+(define-key global-map "\C-cc" 'org-capture)
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/MEGA/org/task.org" "Tasks")
+         "* TODO %?\n %i\n %a")
+        ("j" "Journal" entry (file+datetree "~/MEGA/org/journal.org")
+         "* %?\nEntered on %U\n %i\n %a")))
 
 ;; ;; org-elp
 ;; (require 'org-elp)
