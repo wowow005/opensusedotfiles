@@ -1,9 +1,6 @@
 # Homebrew
 # eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Lunarvim
-# export PATH=~/.local/bin:$PATH
-
 # XDG Paths
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
