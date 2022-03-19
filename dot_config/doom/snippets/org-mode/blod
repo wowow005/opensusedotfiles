@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: blod
+# key: b*
+# --
+*$1* $0

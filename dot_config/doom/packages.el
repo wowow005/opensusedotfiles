@@ -18,6 +18,14 @@
 (package! yasnippet)
 (package! org-elp)
 (package! editorconfig)
+(package! yasnippet-snippets)
+
+(package! beacon)
+
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
@@ -50,6 +58,11 @@
 ;; Use `:pin' to specify a particular commit to install.
 ;(package! builtin-package :pin "1a2b3c4d5e")
 (package! modus-themes :pin "392ebb115b07f8052d512ec847619387d109edd6")
+(package! org-pretty-table
+  :recipe (:host github :repo "Fuco1/org-pretty-table") :pin
+  "87772a9469d91770f87bfa788580fca69b9e697a")
+(use-package! org-pretty-table
+  :commands (org-pretty-table-mode global-org-pretty-table-mode))
 
 
 ;; Doom's packages are pinned to a specific commit and updated from release to

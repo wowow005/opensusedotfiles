@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: equation-array
+# key: equ-array
+# --
+\begin{equation*}
+$1 = \left\{\begin{array}{ll}
+$2 & $3 \\\
+$4 & $5 \\\
+$6 & $7 \\\
+\end{array}\right.
+\end{equation*} $0

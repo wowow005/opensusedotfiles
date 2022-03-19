@@ -59,8 +59,15 @@
 (setq editorconfig-mode 1)
 
 ;; Use YASnippet
-;; (yas-reload-all)
-;; (add-hook 'prog-mode-hook #'yas-minor-mode)
+(add-to-list 'load-path
+             "~/path-to-yasnippet")
+(setq yas-snippet-dirs '("~/.config/doom/snippets"))
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(beacon-mode 1)
+
+(use-package! org-pandoc-import :after org)
 
 
 ;; ==================
