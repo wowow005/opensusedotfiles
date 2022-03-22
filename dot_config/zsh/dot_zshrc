@@ -1,6 +1,7 @@
 case "$(uname -s)" in
     Darwin)
         eval "$(/opt/homebrew/bin/brew shellenv)"
+        export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
         ;;
     Linux)
         ;;
@@ -111,4 +112,7 @@ alias \
 alias \
 	ka="killall" \
 	g="git" \
-	sdn="shutdown -h now" \
+	sdn="shutdown -h now"
+
+#+Doom emacs
+export PATH="$HOME/.emacs.d/bin:$PATH"
