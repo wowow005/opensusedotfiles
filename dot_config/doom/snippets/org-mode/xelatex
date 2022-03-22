@@ -1,0 +1,8 @@
+# key: #+xelatex
+# name: xelatex
+# --
+#+LATEX_COMPILER: xelatex
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setmainfont{LXGW WenKai}
+#+latex_header: \hypersetup{colorlinks=true,linkcolor=blue}
+$0
