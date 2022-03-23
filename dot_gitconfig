@@ -1,0 +1,20 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = wowow005
+	email = goodhelper007@outlook.com
+	password = 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
+[init]
+	defaultBranch = main
+[core]
+	editor = emacs
+	excludesfile = /Users/mushi007/.gitignore
+[diff "lisp"]
+  xfuncname = "^(((;;;+ )|\\(|([ \t]+\\(((cl-|el-patch-)?def(un|var|macro|method|custom)|gb/))).*)$"
+[diff "org"]
+  xfuncname = "^(\\*+ +.*)$"
+[commit]
+	template = /Users/mushi007/MEGA/.config/commit.template

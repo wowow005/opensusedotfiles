@@ -293,8 +293,8 @@
             (setq abbrev-file-name (expand-file-name "abbrev.el" doom-private-dir))))
 
 ;; 2.3.2 非常大的文件
-(use-package! vlf-setup
-  :defer-incrementally vlf-tune vlf-base vlf-write vlf-search vlf-occur vlf-follow vlf-ediff vlf)
+;; (use-package! vlf-setup
+;;   :defer-incrementally vlf-tune vlf-base vlf-write vlf-search vlf-occur vlf-follow vlf-ediff vlf)
 
 ;; 2.3.3 Eros
 ;; From the :tools eval module
@@ -308,52 +308,15 @@
         evil-move-cursor-back nil
         evil-kill-on-visual-paste nil))
 
-;; Use YASnippet
-(setq yas-triggers-in-field t)
-;; (add-to-list 'load-path
-;;              "~/path-to-yasnippet")
-;; (setq yas-snippet-dirs '("~/.config/doom/snippets"))
-;; (require 'yasnippet)
+;; $2.3.5 Consult
+;; From :completion vertico
+;; (after! consult
+;;   (set-face-attribute 'consult-file nil :inherit 'consult-buffer)
+;;   (setf (plist-get (alist-get 'perl consult-async-split-styles-alist) :initial) ";"))
 
-(use-package! string-inflection
-  :commands (string-inflection-all-cycle
-             string-inflection-toggle
-             string-inflection-camelcase
-             string-inflection-lower-camelcase
-             string-inflection-kebab-case
-             string-inflection-underscore
-             string-inflection-capital-underscore
-             string-inflection-upcase)
-  :init
-  (map! :leader :prefix ("c~" . "naming convention")
-        :desc "cycle" "~" #'string-inflection-all-cycle
-        :desc "toggle" "t" #'string-inflection-toggle
-        :desc "CamelCase" "c" #'string-inflection-camelcase
-        :desc "downCase" "d" #'string-inflection-lower-camelcase
-        :desc "kebab-case" "k" #'string-inflection-kebab-case
-        :desc "under_score" "_" #'string-inflection-underscore
-        :desc "Upper_Score" "u" #'string-inflection-capital-underscore
-        :desc "UP_CASE" "U" #'string-inflection-upcase)
-  (after! evil
-    (evil-define-operator evil-operator-string-inflection (beg end _type)
-      "Define a new evil operator that cycles symbol casing."
-      :move-point nil
-      (interactive "<R>")
-      (string-inflection-all-cycle)
-      (setq evil-repeat-info '([?g ?~])))
-    (define-key evil-normal-state-map (kbd "g~") 'evil-operator-string-inflection)))
-; (yas-global-mode 1)
-
-
-;; All the icons
-(after! all-the-icons
-  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
-          (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
-
-
-
-;; Magit
-;; commit message templates
+;; 2.3.6 Magit
+;; From :tools magit
+;; 2.3.6.1 提交信息模板
 (defvar +magit-project-commit-templates-alist nil
   "Alist of toplevel dirs and template strings/functions.")
 (after! magit
@@ -367,7 +330,7 @@
       (goto-char (point-min))
       (end-of-line)))
   (add-hook 'git-commit-setup-hook #'+magit-fill-in-commit-template 90))
-
+;; 为 Org 提交更改的提交信息格式
 (after! magit
   (defun +org-commit-message-template ()
     "Create a skeleton for an Org commit message based on the staged diff."
@@ -413,10 +376,13 @@
             (format "* %s: " (car file-changes))))
         change-data
         "\n\n"))))
-
   (add-to-list '+magit-project-commit-templates-alist (cons "org-mode" #'+org-commit-message-template)))
 
-;; Smerge
+;; $2.3.7 Magit delta
+;; delta 这个插件暂时有问题
+
+;; $2.3.8 Smerge
+;; 没用过
 (defun smerge-repeatedly ()
   "Perform smerge actions again and again"
   (interactive)
@@ -445,15 +411,15 @@
       ("k" "kill current" (lambda () (interactive) (ignore-errors (smerge-kill-current)) (smerge-repeatedly)))
       ("q" "quit" (lambda () (interactive) (smerge-auto-leave)))]]))
 
-;; Company
+;; 2.3.9 Company 补全工具
+;; From :completion company
 (after! company
   (setq company-idle-delay 0.5
         company-minimum-prefix-length 2)
   (setq company-show-quick-access t))
 (setq-default history-length 1000)
 (setq-default prescient-history-length 1000)
-
-;; Plain text
+;; 2.3.9.1 纯文本补全
 (set-company-backend!
   '(text-mode
     markdown-mode
@@ -462,28 +428,92 @@
     company-ispell
     company-files
     company-yasnippet))
-
-;; ESS
+;; 2.3.9.2 ESS
 (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate))
 
-;; Projectile
-;; (setq projectile-ignored-projects '("~/" "/tmp" "~/.emacs.d/.local/straight/repos/"))
-;; (defun projectile-ignored-project-function (filepath)
-;;  "Return t if FILEPATH is within any of `projectile-ignored-projects'"
-;;  (or (mapcar (lambda (p) (s-starts-with-p p filepath)) projectile-ignored-projects)))
+;; 2.3.10 Projectile 禁止一些文件进入项目清单
+;; From :core packages
+(setq projectile-ignored-projects '("~/" "/tmp" "~/.emacs.d/.local/straight/repos/"))
+(defun projectile-ignored-project-function (filepath)
+ "Return t if FILEPATH is within any of `projectile-ignored-projects'"
+ (or (mapcar (lambda (p) (s-starts-with-p p filepath)) projectile-ignored-projects)))
 
-;; TRAMP
-;; prompt recognition
+;; $2.3.11 Ispell 拼写和字典的设置
+;; 暂时放下
+
+;; 2.3.12 Tramp 远程访问的设置
+;; 2.3.12.1 远程访问时对于命令提示符的识别
 (after! tramp
   (setenv "SHELL" "/bin/bash")
   (setq tramp-shell-prompt-pattern "\\(?:^\\|
 \\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")) ;; default + 
-
+;; 2.3.12.2 解决一些远程访问中的问题
+;; Zsh
+;;
+;; 解决 Guix 包管理器的路径问题
 (after! tramp
   (appendq! tramp-remote-path
             '("~/.guix-profile/bin" "~/.guix-profile/sbin"
               "/run/current-system/profile/bin"
               "/run/current-system/profile/sbin")))
+
+;; 2.3.13 ass 自动展开 snippets
+(use-package! aas
+  :commands ass-mode)
+
+;; 2.3.14 Screenshot 截图
+(use-package! screenshot
+  :defer t
+  :config (setq screenshot-upload-fn "0x0 %s 2>/dev/null"))
+
+;; Use YASnippet
+(setq yas-triggers-in-field t)
+;; (add-to-list 'load-path
+;;              "~/path-to-yasnippet")
+;; (setq yas-snippet-dirs '("~/.config/doom/snippets"))
+;; (require 'yasnippet)
+
+(use-package! string-inflection
+  :commands (string-inflection-all-cycle
+             string-inflection-toggle
+             string-inflection-camelcase
+             string-inflection-lower-camelcase
+             string-inflection-kebab-case
+             string-inflection-underscore
+             string-inflection-capital-underscore
+             string-inflection-upcase)
+  :init
+  (map! :leader :prefix ("c~" . "naming convention")
+        :desc "cycle" "~" #'string-inflection-all-cycle
+        :desc "toggle" "t" #'string-inflection-toggle
+        :desc "CamelCase" "c" #'string-inflection-camelcase
+        :desc "downCase" "d" #'string-inflection-lower-camelcase
+        :desc "kebab-case" "k" #'string-inflection-kebab-case
+        :desc "under_score" "_" #'string-inflection-underscore
+        :desc "Upper_Score" "u" #'string-inflection-capital-underscore
+        :desc "UP_CASE" "U" #'string-inflection-upcase)
+  (after! evil
+    (evil-define-operator evil-operator-string-inflection (beg end _type)
+      "Define a new evil operator that cycles symbol casing."
+      :move-point nil
+      (interactive "<R>")
+      (string-inflection-all-cycle)
+      (setq evil-repeat-info '([?g ?~])))
+    (define-key evil-normal-state-map (kbd "g~") 'evil-operator-string-inflection)))
+; (yas-global-mode 1)
+
+
+;; All the icons
+(after! all-the-icons
+  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
+          (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
+
+
+
+
+
+
+
 
 ;; Doom modeline
 (after! doom-modeline

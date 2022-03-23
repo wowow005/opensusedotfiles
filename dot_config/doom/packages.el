@@ -27,11 +27,18 @@
 ;; ====
 
 ;; 2.3.2 非常大的文件
-(package! vlf :recipe (:host github :repo "m00natic/vlfi" :files ("*.el"))
-  :pin "cc02f2533782d6b9b628cec7e2dcf25b2d05a27c" :disable t)
+;; (package! vlf :recipe (:host github :repo "m00natic/vlfi" :files ("*.el"))
+;;   :pin "cc02f2533782d6b9b628cec7e2dcf25b2d05a27c" :disable t)
 
 ;; 2.3.4 Evil
 ;; (package! evil-escape :disable t)
+
+;; 2.3.13 ass 自动激活snippets
+(package! aas :recipe (:host github :repo "ymarco/auto-activating-snippets")
+  :pin "b1a436922ba06ab9e1a5cc222f1a4f25a7697231")
+
+;; 2.3.14 Screenshot 截图
+(package! screenshot :recipe (:local-repo "lisp/screenshot"))
 
 ;; (package! yasnippet)
 (package! org-elp)
@@ -40,21 +47,10 @@
 (package! beacon)
 
 
-(package! screenshot :recipe (:local-repo "lisp/screenshot"))
-(use-package! screenshot
-  :defer t
-  :config (setq screenshot-upload-fn "upload %s 2>/dev/null"))
-
 (package! etrace :recipe (:host github :repo "aspiers/etrace"))
 (use-package! etrace
   :after elp)
 
-
-
-(package! aas :recipe (:host github :repo "ymarco/auto-activating-snippets")
-  :pin "b1a436922ba06ab9e1a5cc222f1a4f25a7697231")
-(use-package! aas
-  :commands ass-mode)
 
 (package! page-break-lines :recipe (:host github :repo "purcell/page-break-lines"))
 
