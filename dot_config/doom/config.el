@@ -86,6 +86,7 @@
 
 ;; 1.3.2.2 主题和底栏设置
 (setq doom-theme 'modus-vivendi)
+;; (setq doom-theme 'doom-vibrant)
 (remove-hook 'window-setup-hook #'doom-init-theme-h)
 (add-hook 'after-init-hook #'doom-init-theme-h 'append)
 (delq! t custom-theme-load-path)
@@ -466,13 +467,21 @@
   :defer t
   :config (setq screenshot-upload-fn "0x0 %s 2>/dev/null"))
 
-;; Use YASnippet
+;; 2.3.15 $Etrace
+;; 没有研究
+(use-package! etrace
+  :after elp)
+
+;; 2.3.16 YASnippet
+;; From :edtior snippets
 (setq yas-triggers-in-field t)
 ;; (add-to-list 'load-path
 ;;              "~/path-to-yasnippet")
 ;; (setq yas-snippet-dirs '("~/.config/doom/snippets"))
 ;; (require 'yasnippet)
+; (yas-global-mode 1)
 
+;; 2.3.17 String inflection 大小写转换工具
 (use-package! string-inflection
   :commands (string-inflection-all-cycle
              string-inflection-toggle
@@ -500,29 +509,99 @@
       (string-inflection-all-cycle)
       (setq evil-repeat-info '([?g ?~])))
     (define-key evil-normal-state-map (kbd "g~") 'evil-operator-string-inflection)))
-; (yas-global-mode 1)
 
+;; 2.3.18 Smart parentheses
+(sp-local-pair
+ '(org-mode)
+ "<<" ">>"
+ :actions '(insert))
 
-;; All the icons
-(after! all-the-icons
-  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
-          (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
+;; ====
+;; ==== 2.4 Visuals 视觉效果
+;; ====
 
+;; 2.4.1 Info colours
+(use-package! info-colors
+  :commands (info-colors-fontify-node))
+(add-hook 'Info-selection-hook 'info-colors-fontify-node)
 
+;; 2.4.2 Modus themes 我用的一款主题
 
+;; 2.4.3 Theme magic 终端的主题
+(use-package! theme-magic
+  :commands theme-magic-from-emacs
+  :config
+  (defadvice! theme-magic--auto-extract-16-doom-colors ()
+    :override #'theme-magic--auto-extract-16-colors
+    (list
+     (face-attribute 'default :background)
+     (doom-color 'error)
+     (doom-color 'success)
+     (doom-color 'type)
+     (doom-color 'keywords)
+     (doom-color 'constants)
+     (doom-color 'functions)
+     (face-attribute 'default :foreground)
+     (face-attribute 'shadow :foreground)
+     (doom-blend 'base8 'error 0.1)
+     (doom-blend 'base8 'success 0.1)
+     (doom-blend 'base8 'type 0.1)
+     (doom-blend 'base8 'keywords 0.1)
+     (doom-blend 'base8 'constants 0.1)
+     (doom-blend 'base8 'functions 0.1)
+     (face-attribute 'default :foreground))))
 
+;; 2.4.4 Emojify
+;; From :ui emoji
+;; 用 twitter 表情替换默认的表情
+(setq emojify-emoji-set "twemoji-v2")
+;; 用表情替换一些在 Org 中遇到的字符
+(defvar emojify-disabled-emojis
+  '(;; Org
+    "◼" "☑" "☸" "⚙" "⏩" "⏪" "⬆" "⬇" "❓"
+    ;; Terminal powerline
+    "✔"
+    ;; Box drawing
+    "▶" "◀"
+    ;; I just want to see this as text
+    "©" "™")
+  "Characters that should never be affected by `emojify-mode'.")
+(defadvice! emojify-delete-from-data ()
+  "Ensure `emojify-disabled-emojis' don't appear in `emojify-emojis'."
+  :after #'emojify-set-emoji-data
+  (dolist (emoji emojify-disabled-emojis)
+    (remhash emoji emojify-emojis)))
+;; 创建一种次要模式, 它能将你输入的 ascii/gh 表情转换成 Unicode 格式
+(defun emojify--replace-text-with-emoji (orig-fn emoji text buffer start end &optional target)
+  "Modify `emojify--propertize-text-for-emoji' to replace ascii/github emoticons with unicode emojis, on the fly."
+  (if (or (not emoticon-to-emoji) (= 1 (length text)))
+      (funcall orig-fn emoji text buffer start end target)
+    (delete-region start end)
+    (insert (ht-get emoji "unicode"))))
+(define-minor-mode emoticon-to-emoji
+  "Write ascii/gh emojis, and have them converted to unicode live."
+  :global nil
+  :init-value nil
+  (if emoticon-to-emoji
+      (progn
+        (setq-local emojify-emoji-styles '(ascii github unicode))
+        (advice-add 'emojify--propertize-text-for-emoji :around #'emojify--replace-text-with-emoji)
+        (unless emojify-mode
+          (emojify-turn-on-emojify-mode)))
+    (setq-local emojify-emoji-styles (default-value 'emojify-emoji-styles))
+    (advice-remove 'emojify--propertize-text-for-emoji #'emojify--replace-text-with-emoji)))
+;; 在电子邮件和 IRC 中也添加这种次要模式
+(add-hook! '(mu4e-compose-mode org-msg-edit-mode circe-channel-mode) (emoticon-to-emoji 1))
 
-
-
-
-;; Doom modeline
+;; 2.4.5 Doom 的底栏
+;; From :ui modeline
+;; 对于 PDF 模式底栏的一些调整
 (after! doom-modeline
   (doom-modeline-def-segment buffer-name
     "Display the current buffer's name, without any other information."
     (concat
      (doom-modeline-spc)
      (doom-modeline--buffer-name)))
-
   (doom-modeline-def-segment pdf-icon
     "PDF icon from all-the-icons."
     (concat
@@ -532,7 +611,6 @@
                                    'all-the-icons-red
                                  'mode-line-inactive)
                          :v-adjust 0.02)))
-
   (defun doom-modeline-update-pdf-pages ()
     "Update PDF pages."
     (setq doom-modeline--pdf-pages
@@ -544,16 +622,15 @@
                       " P" current-page-str)
               'face 'mode-line)
              (propertize (concat "/" total-page-str) 'face 'doom-modeline-buffer-minor-mode)))))
-
   (doom-modeline-def-segment pdf-pages
     "Display PDF pages."
     (if (doom-modeline--active) doom-modeline--pdf-pages
       (propertize doom-modeline--pdf-pages 'face 'mode-line-inactive)))
-
   (doom-modeline-def-modeline 'pdf
     '(bar window-number pdf-pages pdf-icon buffer-name)
     '(misc-info matches major-mode process vcs)))
 
+;; 2.4.6 Keycast 按键显示工具
 (use-package! keycast
   :commands keycast-mode
   :config
@@ -573,7 +650,10 @@
                   :height 1.1
                   :weight bold)))
 
-;; Mixed pitch
+;; 2.4.7 Screencast
+
+;; 2.4.8 Mixed pitch
+;; From :ui zen
 (defvar mixed-pitch-modes '(org-mode LaTeX-mode markdown-mode gfm-mode Info-mode)
   "Modes that `mixed-pitch-mode' should be enabled in, but only after UI initialisation.")
 (defun init-mixed-pitch-h ()
@@ -584,10 +664,8 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   (dolist (hook mixed-pitch-modes)
     (add-hook (intern (concat (symbol-name hook) "-hook")) #'mixed-pitch-mode)))
 (add-hook 'doom-init-ui-hook #'init-mixed-pitch-h)
-
 (autoload #'mixed-pitch-serif-mode "mixed-pitch"
   "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch." t)
-
 (after! mixed-pitch
   (defface variable-pitch-serif
     '((t (:family "serif")))
@@ -601,13 +679,75 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
     (interactive)
     (let ((mixed-pitch-face 'variable-pitch-serif))
       (mixed-pitch-mode (or arg 'toggle)))))
-
 (set-char-table-range composition-function-table ?f '(["\\(?:ff?[fijlt]\\)" 0 font-shape-gstring]))
 (set-char-table-range composition-function-table ?T '(["\\(?:Th\\)" 0 font-shape-gstring]))
 
-;; Writeroom
-(setq +zen-text-scale 0.8)
+;; 2.4.9 Marginalia
+;; From :completion vertico
+(after! marginalia
+  (setq marginalia-censor-variables nil)
+  (defadvice! +marginalia--anotate-local-file-colorful (cand)
+    "Just a more colourful version of `marginalia--anotate-local-file'."
+    :override #'marginalia--annotate-local-file
+    (when-let (attrs (file-attributes (substitute-in-file-name
+                                       (marginalia--full-candidate cand))
+                                      'integer))
+      (marginalia--fields
+       ((marginalia--file-owner attrs)
+        :width 12 :face 'marginalia-file-owner)
+       ((marginalia--file-modes attrs))
+       ((+marginalia-file-size-colorful (file-attribute-size attrs))
+        :width 7)
+       ((+marginalia--time-colorful (file-attribute-modification-time attrs))
+        :width 12))))
+  (defun +marginalia--time-colorful (time)
+    (let* ((seconds (float-time (time-subtract (current-time) time)))
+           (color (doom-blend
+                   (face-attribute 'marginalia-date :foreground nil t)
+                   (face-attribute 'marginalia-documentation :foreground nil t)
+                   (/ 1.0 (log (+ 3 (/ (+ 1 seconds) 345600.0)))))))
+      ;; 1 - log(3 + 1/(days + 1)) % grey
+      (propertize (marginalia--time time) 'face (list :foreground color))))
+  (defun +marginalia-file-size-colorful (size)
+    (let* ((size-index (/ (log10 (+ 1 size)) 7.0))
+           (color (if (< size-index 10000000) ; 10m
+                      (doom-blend 'orange 'green size-index)
+                    (doom-blend 'red 'orange (- size-index 1)))))
+      (propertize (file-size-human-readable size) 'face (list :foreground color)))))
 
+;; 2.4.10 Centaur Tabs
+;; From :ui tabs
+(after! centaur-tabs
+  (centaur-tabs-mode -1)
+  (setq centaur-tabs-height 36
+        centaur-tabs-set-icons t
+        centaur-tabs-modified-marker "o"
+        centaur-tabs-close-button "×"
+        centaur-tabs-set-bar 'above
+        centaur-tabs-gray-out-icons 'buffer)
+  (centaur-tabs-change-fonts "P22 Underground Book" 160))
+;; (setq x-underline-at-descent-line t)
+
+;; 2.4.11 All the icons
+;; From :core packages
+(after! all-the-icons
+  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
+          (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
+
+;; 2.4.12 Page-break 处理翻页符
+(use-package! page-break-lines
+  :commands page-break-lines-mode
+  :init
+  (autoload 'turn-on-page-break-lines-mode "page-break-lines")
+  :config
+  (setq page-break-lines-max-width fill-column)
+  (map! :prefix "g"
+        :desc "Prev page break" :nv "[" #'backward-page
+        :desc "Next page break" :nv "]" #'forward-page))
+
+;; 2.4.13 Writeroom
+;; From :ui zen
+(setq +zen-text-scale 0.7)
 (defvar +zen-serif-p t
   "Whether to use a serifed font with `mixed-pitch-mode'.")
 (after! writeroom-mode
@@ -655,38 +795,24 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
                 ;; (unless +zen--original-org-pretty-table-mode-p (org-pretty-table-mode -1))
                 ))))
 
-;; Page-break
-(use-package! page-break-lines
-  :commands page-break-lines-mode
-  :init
-  (autoload 'turn-on-page-break-lines-mode "page-break-lines")
-  :config
-  (setq page-break-lines-max-width fill-column)
-  (map! :prefix "g"
-        :desc "Prev page break" :nv "[" #'backward-page
-        :desc "Next page break" :nv "]" #'forward-page))
+;; 2.4.14 Treemacs 一个文件侧边栏工具
+;; 我不需要改动
 
-;; Centaur Tabs
-(after! centaur-tabs
-  (centaur-tabs-mode -1)
-  (setq centaur-tabs-height 36
-        centaur-tabs-set-icons t
-        centaur-tabs-modified-marker "o"
-        centaur-tabs-close-button "×"
-        centaur-tabs-set-bar 'above
-        centaur-tabs-gray-out-icons 'buffer)
-  (centaur-tabs-change-fonts "P22 Underground Book" 160))
-;; (setq x-underline-at-descent-line t)
+;; ====
+;; ==== 2.5 Frivolities 一些娱乐的安装包
+;; ====
 
-;; ===========
-;; Frivolities
-;; ===========
+;; 2.5.1 xkcd 一个漫画包
+;; 我不需要
 
-;; Selectric 打字时发声
-(use-package! selectric-mode
-  :commands selectric-mode)
+;; 2.5.2 Selectric 打字时发声
+;; 没人喜欢听老打字机的噪声...
+;; (use-package! selectric-mode
+;;   :commands selectric-mode)
 
-;; Spray 在屏幕上闪现文字
+;; 2.5.3 Wttrin
+
+;; 2.5.4 Spray 闪现文字工具
 (use-package! spray
   :commands spray-mode
   :config
@@ -710,23 +836,36 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         "l" #'spray-backward-word
         "q" #'spray-quit))
 
-;; Elcord 在discord上显示你正在使用 emacs
+;; 2.5.5 Elcord 在 discord 中展示使用 emacs 状态
 (use-package! elcord
   :commands elcord-mode
   :config
   (setq elcord-use-major-mode-as-main-icon t))
 
-;; ============
-;; Applications
-;; ============
-;; EBOOKS
+;; ====
+;; ==== 2.6 File types 文件类型
+;; ====
 
-;; CALCULATOR
-;; defaults
+
+;; =============
+;; ==== 3 应用程序
+;; =============
+
+;; ====
+;; ==== 3.1 看电子书
+;; ====
+;; 我不觉得这是个好主意 ...
+
+;; ====
+;; ==== 3.2 Emacs 中的计算器
+;; ====
+
+;; 3.2.1 初始化
+;; 弧度制和精确值
 (setq calc-angle-mode 'rad  ; radians are rad
       calc-symbolic-mode t) ; keeps expressions like \sqrt{2} irrational for as long as possible
 
-;; Calctex
+;; 3.2.2 计算 Tex 公式 CalcTeX
 (use-package! calctex
   :commands calctex-mode
   :init
@@ -763,7 +902,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
     (let ((default-directory (file-name-directory calctex-dvichop-bin)))
       (call-process "make" nil nil nil))))
 
-;; embedded calc
+;; $3.2.3 嵌入计算器 embedded calc
 (map! :map calc-mode-map
       :after calc
       :localleader
@@ -779,7 +918,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
 (defvar calc-embedded-trail-window nil)
 (defvar calc-embedded-calculator-window nil)
-
 (defadvice! calc-embedded-with-side-pannel (&rest _)
   :after #'calc-do-embedded
   (when calc-embedded-trail-window
@@ -808,7 +946,18 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
       (switch-to-buffer "*Calculator*")
       (select-window main-window))))
 
-;; NEWSFEED
+;; ====
+;; ==== $3.3 IRC
+;; ====
+
+
+;; ====
+;; ==== 3.4 新闻订阅 RSS
+;; ====
+
+;; ====
+;; ==== 3.5 字典
+;; ====
 
 ;; Language Setting
 ;; Python
@@ -816,22 +965,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   (set-lsp-priority! 'mspyls 1))
 
 
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
 
 (beacon-mode 1)
 

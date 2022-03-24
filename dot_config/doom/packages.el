@@ -40,65 +40,85 @@
 ;; 2.3.14 Screenshot 截图
 (package! screenshot :recipe (:local-repo "lisp/screenshot"))
 
+;; 2.3.15 Etrace
+(package! etrace :recipe (:host github :repo "aspiers/etrace"))
+
+;; 2.3.16 YAsnippet
 ;; (package! yasnippet)
+
+;; 2.3.17 String inflection
+(package! string-inflection :pin "fd7926ac17293e9124b31f706a4e8f38f6a9b855")
+
+;; ====
+;; ==== 2.4 Visuals 视觉效果
+;; ====
+
+;; 2.4.1 Info colours
+(package! info-colors :pin "47ee73cc19b1049eef32c9f3e264ea7ef2aaf8a5")
 (package! org-elp)
 (package! editorconfig)
 (package! yasnippet-snippets)
 (package! beacon)
 
+;; 2.4.2 Modus themes 我用的一款主题
+(package! modus-themes :pin "392ebb115b07f8052d512ec847619387d109edd6")
 
-(package! etrace :recipe (:host github :repo "aspiers/etrace"))
-(use-package! etrace
-  :after elp)
+;; 2.4.3 Theme magic 终端的主题
+(package! theme-magic :pin "844c4311bd26ebafd4b6a1d72ddcc65d87f074e3")
+
+;; 2.4.6 Keycast 按键显示工具
+(package! keycast :pin "72d9add8ba16e0cae8cfcff7fc050fa75e493b4e")
 
 
+;; 2.4.7 Screencast
+
+;; 2.4.8 Mixed pitch
+;; From :ui zen
+
+;; 2.4.12 Page-break 处理翻页符
 (package! page-break-lines :recipe (:host github :repo "purcell/page-break-lines"))
 
+;; ====
+;; ==== 2.5 Frivolities 一些娱乐的安装包
+;; ====
+
+;; 2.5.1 xkcd 一个漫画包
+;; 我不需要
+
+;; 2.5.2 Selectric 打字时发声
+;; 没人喜欢听老打字机的噪声...
+;; (package! selectric-mode :pin "1840de71f7414b7cd6ce425747c8e26a413233aa")
+
+;; 2.5.3 Wttrin
+
+;; 2.5.4 Spray 闪现文字工具
 (package! spray :pin "74d9dcfa2e8b38f96a43de9ab0eb13364300cb46")
 
+;; 2.5.5 Elcord 在 discord 中展示使用 emacs 状态
 (package! elcord :pin "eb4ae2e7e03a5fc26b054ba2fa9a1d308e239c76")
 
-(package! selectric-mode :pin "1840de71f7414b7cd6ce425747c8e26a413233aa")
+;; =============
+;; ==== 3 应用程序
+;; =============
 
-(package! string-inflection :pin "fd7926ac17293e9124b31f706a4e8f38f6a9b855")
+;; ====
+;; ==== 3.1 看电子书
+;; ====
+;; 我不觉得这是个好主意 ...
 
-(package! info-colors :pin "47ee73cc19b1049eef32c9f3e264ea7ef2aaf8a5")
-(use-package! info-colors
-  :commands (info-colors-fontify-node))
-(add-hook 'Info-selection-hook 'info-colors-fontify-node)
+;; ====
+;; ==== 3.2 Emacs 中的计算器
+;; ====
+
+;; 3.2.2 计算 Tex 公式 CalcTeX
+(package! calctex :recipe (:host github :repo "johnbcoughlin/calctex"
+                           :files ("*.el" "calctex/*.el" "calctex-contrib/*.el" "org-calctex/*.el" "vendor"))
+  :pin "67a2e76847a9ea9eff1f8e4eb37607f84b380ebb")
 
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
-
-(package! modus-themes :pin "392ebb115b07f8052d512ec847619387d109edd6")
-
-(package! theme-magic :pin "844c4311bd26ebafd4b6a1d72ddcc65d87f074e3")
-(use-package! theme-magic
-  :commands theme-magic-from-emacs
-  :config
-  (defadvice! theme-magic--auto-extract-16-doom-colors ()
-    :override #'theme-magic--auto-extract-16-colors
-    (list
-     (face-attribute 'default :background)
-     (doom-color 'error)
-     (doom-color 'success)
-     (doom-color 'type)
-     (doom-color 'keywords)
-     (doom-color 'constants)
-     (doom-color 'functions)
-     (face-attribute 'default :foreground)
-     (face-attribute 'shadow :foreground)
-     (doom-blend 'base8 'error 0.1)
-     (doom-blend 'base8 'success 0.1)
-     (doom-blend 'base8 'type 0.1)
-     (doom-blend 'base8 'keywords 0.1)
-     (doom-blend 'base8 'constants 0.1)
-     (doom-blend 'base8 'functions 0.1)
-     (face-attribute 'default :foreground))))
-
-(package! keycast :pin "72d9add8ba16e0cae8cfcff7fc050fa75e493b4e")
 
 (package! org-pretty-table
   :recipe (:host github :repo "Fuco1/org-pretty-table") :pin
@@ -128,6 +148,3 @@
 (use-package! doct
   :commands doct)
 
-(package! calctex :recipe (:host github :repo "johnbcoughlin/calctex"
-                           :files ("*.el" "calctex/*.el" "calctex-contrib/*.el" "org-calctex/*.el" "vendor"))
-  :pin "67a2e76847a9ea9eff1f8e4eb37607f84b380ebb")
