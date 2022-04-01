@@ -250,23 +250,23 @@
 ;; packag.el
 
 ;; 2.2.3 Emacs Everwhere
-(use-package! emacs-everywhere
-  :if (daemonp)
-  :config
-  (require 'spell-fu)
-  (setq emacs-everywhere-major-mode-function #'org-mode
-        emacs-everywhere-frame-name-format "Edit ∷ %s — %s")
-  (defadvice! emacs-everywhere-raise-frame ()
-    :after #'emacs-everywhere-set-frame-name
-    (setq emacs-everywhere-frame-name (format emacs-everywhere-frame-name-format
-                                (emacs-everywhere-app-class emacs-everywhere-current-app)
-                                (truncate-string-to-width
-                                 (emacs-everywhere-app-title emacs-everywhere-current-app)
-                                 45 nil nil "…")))
-    ;; need to wait till frame refresh happen before really set
-    (run-with-timer 0.1 nil #'emacs-everywhere-raise-frame-1))
-  (defun emacs-everywhere-raise-frame-1 ()
-    (call-process "wmctrl" nil nil nil "-a" emacs-everywhere-frame-name)))
+;; (use-package! emacs-everywhere
+;;   :if (daemonp)
+;;   :config
+;;   (require 'spell-fu)
+;;   (setq emacs-everywhere-major-mode-function #'org-mode
+;;         emacs-everywhere-frame-name-format "Edit ∷ %s — %s")
+;;   (defadvice! emacs-everywhere-raise-frame ()
+;;     :after #'emacs-everywhere-set-frame-name
+;;     (setq emacs-everywhere-frame-name (format emacs-everywhere-frame-name-format
+;;                                 (emacs-everywhere-app-class emacs-everywhere-current-app)
+;;                                 (truncate-string-to-width
+;;                                  (emacs-everywhere-app-title emacs-everywhere-current-app)
+;;                                  45 nil nil "…")))
+;;     ;; need to wait till frame refresh happen before really set
+;;     (run-with-timer 0.1 nil #'emacs-everywhere-raise-frame-1))
+;;   (defun emacs-everywhere-raise-frame-1 ()
+;;     (call-process "wmctrl" nil nil nil "-a" emacs-everywhere-frame-name)))
 
 ;; 2.2.4 Which-key
 (setq which-key-idle-delay 0.5)
@@ -286,6 +286,23 @@
 ;; ====
 ;; ==== 2.3 工具
 ;; ====
+
+;; 2.3.0 Vterm 让 Emacs 中的终端更好用
+;; From :term vterm
+;; Emacs -> Vterm
+;; (require 'vterm)
+;; (defun run-cmd-in-vterm (cmd)
+;;   (let* ((name (concat "#Vterm" cmd))
+;;          (cmd (concat cmd "\n"))
+;;          (vterm-buffer (vterm--internal (lambda (_) nil) name)))
+;;     (with-current-buffer vterm-buffer
+;;       ;; don's show in vterm-toogle
+;;       (setq-local vterm-toggle--dedicated-p t)
+;;       (vterm-send-string cmd))))
+;; Vterm -> Emacs
+;; whitelist
+;; (add-to-list 'vterm-eval-cmds '("magit-status" magit-status))
+
 
 ;; 2.3.1 Abbrev
 (add-hook 'doom-first-buffer-hook
@@ -444,19 +461,19 @@
 
 ;; 2.3.12 Tramp 远程访问的设置
 ;; 2.3.12.1 远程访问时对于命令提示符的识别
-(after! tramp
-  (setenv "SHELL" "/bin/bash")
-  (setq tramp-shell-prompt-pattern "\\(?:^\\|
-\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")) ;; default + 
+;; (after! tramp
+;;   (setenv "SHELL" "/bin/bash")
+;;   (setq tramp-shell-prompt-pattern "\\(?:^\\|
+;; \\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")) ;; default + 
 ;; 2.3.12.2 解决一些远程访问中的问题
 ;; Zsh
 ;;
 ;; 解决 Guix 包管理器的路径问题
-(after! tramp
-  (appendq! tramp-remote-path
-            '("~/.guix-profile/bin" "~/.guix-profile/sbin"
-              "/run/current-system/profile/bin"
-              "/run/current-system/profile/sbin")))
+;; (after! tramp
+;;   (appendq! tramp-remote-path
+;;             '("~/.guix-profile/bin" "~/.guix-profile/sbin"
+;;               "/run/current-system/profile/bin"
+;;               "/run/current-system/profile/sbin")))
 
 ;; 2.3.13 ass 自动展开 snippets
 (use-package! aas
@@ -528,28 +545,28 @@
 ;; 2.4.2 Modus themes 我用的一款主题
 
 ;; 2.4.3 Theme magic 终端的主题
-(use-package! theme-magic
-  :commands theme-magic-from-emacs
-  :config
-  (defadvice! theme-magic--auto-extract-16-doom-colors ()
-    :override #'theme-magic--auto-extract-16-colors
-    (list
-     (face-attribute 'default :background)
-     (doom-color 'error)
-     (doom-color 'success)
-     (doom-color 'type)
-     (doom-color 'keywords)
-     (doom-color 'constants)
-     (doom-color 'functions)
-     (face-attribute 'default :foreground)
-     (face-attribute 'shadow :foreground)
-     (doom-blend 'base8 'error 0.1)
-     (doom-blend 'base8 'success 0.1)
-     (doom-blend 'base8 'type 0.1)
-     (doom-blend 'base8 'keywords 0.1)
-     (doom-blend 'base8 'constants 0.1)
-     (doom-blend 'base8 'functions 0.1)
-     (face-attribute 'default :foreground))))
+;; (use-package! theme-magic
+;;   :commands theme-magic-from-emacs
+;;   :config
+;;   (defadvice! theme-magic--auto-extract-16-doom-colors ()
+;;     :override #'theme-magic--auto-extract-16-colors
+;;     (list
+;;      (face-attribute 'default :background)
+;;      (doom-color 'error)
+;;      (doom-color 'success)
+;;      (doom-color 'type)
+;;      (doom-color 'keywords)
+;;      (doom-color 'constants)
+;;      (doom-color 'functions)
+;;      (face-attribute 'default :foreground)
+;;      (face-attribute 'shadow :foreground)
+;;      (doom-blend 'base8 'error 0.1)
+;;      (doom-blend 'base8 'success 0.1)
+;;      (doom-blend 'base8 'type 0.1)
+;;      (doom-blend 'base8 'keywords 0.1)
+;;      (doom-blend 'base8 'constants 0.1)
+;;      (doom-blend 'base8 'functions 0.1)
+;;      (face-attribute 'default :foreground))))
 
 ;; 2.4.4 Emojify
 ;; From :ui emoji
@@ -560,7 +577,7 @@
   '(;; Org
     "◼" "☑" "☸" "⚙" "⏩" "⏪" "⬆" "⬇" "❓"
     ;; Terminal powerline
-    "✔"
+    ;; "✔"
     ;; Box drawing
     "▶" "◀"
     ;; I just want to see this as text
@@ -631,24 +648,24 @@
     '(misc-info matches major-mode process vcs)))
 
 ;; 2.4.6 Keycast 按键显示工具
-(use-package! keycast
-  :commands keycast-mode
-  :config
-  (define-minor-mode keycast-mode
-    "Show current command and its key binding in the mode line."
-    :global t
-    (if keycast-mode
-        (progn
-          (add-hook 'pre-command-hook 'keycast--update t)
-          (add-to-list 'global-mode-string '("" mode-line-keycast " ")))
-      (remove-hook 'pre-command-hook 'keycast--update)
-      (setq global-mode-string (remove '("" mode-line-keycast " ") global-mode-string))))
-  (custom-set-faces!
-    '(keycast-command :inherit doom-modeline-debug
-                      :height 0.9)
-    '(keycast-key :inherit custom-modified
-                  :height 1.1
-                  :weight bold)))
+;; (use-package! keycast
+;;   :commands keycast-mode
+;;   :config
+;;   (define-minor-mode keycast-mode
+;;     "Show current command and its key binding in the mode line."
+;;     :global t
+;;     (if keycast-mode
+;;         (progn
+;;           (add-hook 'pre-command-hook 'keycast--update t)
+;;           (add-to-list 'global-mode-string '("" mode-line-keycast " ")))
+;;       (remove-hook 'pre-command-hook 'keycast--update)
+;;       (setq global-mode-string (remove '("" mode-line-keycast " ") global-mode-string))))
+;;   (custom-set-faces!
+;;     '(keycast-command :inherit doom-modeline-debug
+;;                       :height 0.9)
+;;     '(keycast-key :inherit custom-modified
+;;                   :height 1.1
+;;                   :weight bold)))
 
 ;; 2.4.7 Screencast
 
@@ -866,85 +883,85 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
       calc-symbolic-mode t) ; keeps expressions like \sqrt{2} irrational for as long as possible
 
 ;; 3.2.2 计算 Tex 公式 CalcTeX
-(use-package! calctex
-  :commands calctex-mode
-  :init
-  (add-hook 'calc-mode-hook #'calctex-mode)
-  :config
-  (setq calctex-additional-latex-packages "
-\\usepackage[usenames]{xcolor}
-\\usepackage{soul}
-\\usepackage{adjustbox}
-\\usepackage{amsmath}
-\\usepackage{amssymb}
-\\usepackage{siunitx}
-\\usepackage{cancel}
-\\usepackage{mathtools}
-\\usepackage{mathalpha}
-\\usepackage{xparse}
-\\usepackage{arevmath}"
-        calctex-additional-latex-macros
-        (concat calctex-additional-latex-macros
-                "\n\\let\\evalto\\Rightarrow"))
-  (defadvice! no-messaging-a (orig-fn &rest args)
-    :around #'calctex-default-dispatching-render-process
-    (let ((inhibit-message t) message-log-max)
-      (apply orig-fn args)))
-  ;; Fix hardcoded dvichop path (whyyyyyyy)
-  (let ((vendor-folder (concat (file-truename doom-local-dir)
-                               "straight/"
-                               (format "build-%s" emacs-version)
-                               "/calctex/vendor/")))
-    (setq calctex-dvichop-sty (concat vendor-folder "texd/dvichop")
-          calctex-dvichop-bin (concat vendor-folder "texd/dvichop")))
-  (unless (file-exists-p calctex-dvichop-bin)
-    (message "CalcTeX: Building dvichop binary")
-    (let ((default-directory (file-name-directory calctex-dvichop-bin)))
-      (call-process "make" nil nil nil))))
+;; (use-package! calctex
+;;   :commands calctex-mode
+;;   :init
+;;   (add-hook 'calc-mode-hook #'calctex-mode)
+;;   :config
+;;   (setq calctex-additional-latex-packages "
+;; \\usepackage[usenames]{xcolor}
+;; \\usepackage{soul}
+;; \\usepackage{adjustbox}
+;; \\usepackage{amsmath}
+;; \\usepackage{amssymb}
+;; \\usepackage{siunitx}
+;; \\usepackage{cancel}
+;; \\usepackage{mathtools}
+;; \\usepackage{mathalpha}
+;; \\usepackage{xparse}
+;; \\usepackage{arevmath}"
+;;         calctex-additional-latex-macros
+;;         (concat calctex-additional-latex-macros
+;;                 "\n\\let\\evalto\\Rightarrow"))
+;;   (defadvice! no-messaging-a (orig-fn &rest args)
+;;     :around #'calctex-default-dispatching-render-process
+;;     (let ((inhibit-message t) message-log-max)
+;;       (apply orig-fn args)))
+;;   ;; Fix hardcoded dvichop path (whyyyyyyy)
+;;   (let ((vendor-folder (concat (file-truename doom-local-dir)
+;;                                "straight/"
+;;                                (format "build-%s" emacs-version)
+;;                                "/calctex/vendor/")))
+;;     (setq calctex-dvichop-sty (concat vendor-folder "texd/dvichop")
+;;           calctex-dvichop-bin (concat vendor-folder "texd/dvichop")))
+;;   (unless (file-exists-p calctex-dvichop-bin)
+;;     (message "CalcTeX: Building dvichop binary")
+;;     (let ((default-directory (file-name-directory calctex-dvichop-bin)))
+;;       (call-process "make" nil nil nil))))
 
 ;; $3.2.3 嵌入计算器 embedded calc
-(map! :map calc-mode-map
-      :after calc
-      :localleader
-      :desc "Embedded calc (toggle)" "e" #'calc-embedded)
-(map! :map org-mode-map
-      :after org
-      :localleader
-      :desc "Embedded calc (toggle)" "E" #'calc-embedded)
-(map! :map latex-mode-map
-      :after latex
-      :localleader
-      :desc "Embedded calc (toggle)" "e" #'calc-embedded)
+;; (map! :map calc-mode-map
+;;       :after calc
+;;       :localleader
+;;       :desc "Embedded calc (toggle)" "e" #'calc-embedded)
+;; (map! :map org-mode-map
+;;       :after org
+;;       :localleader
+;;       :desc "Embedded calc (toggle)" "E" #'calc-embedded)
+;; (map! :map latex-mode-map
+;;       :after latex
+;;       :localleader
+;;       :desc "Embedded calc (toggle)" "e" #'calc-embedded)
 
-(defvar calc-embedded-trail-window nil)
-(defvar calc-embedded-calculator-window nil)
-(defadvice! calc-embedded-with-side-pannel (&rest _)
-  :after #'calc-do-embedded
-  (when calc-embedded-trail-window
-    (ignore-errors
-      (delete-window calc-embedded-trail-window))
-    (setq calc-embedded-trail-window nil))
-  (when calc-embedded-calculator-window
-    (ignore-errors
-      (delete-window calc-embedded-calculator-window))
-    (setq calc-embedded-calculator-window nil))
-  (when (and calc-embedded-info
-             (> (* (window-width) (window-height)) 1200))
-    (let ((main-window (selected-window))
-          (vertical-p (> (window-width) 80)))
-      (select-window
-       (setq calc-embedded-trail-window
-             (if vertical-p
-                 (split-window-horizontally (- (max 30 (/ (window-width) 3))))
-               (split-window-vertically (- (max 8 (/ (window-height) 4)))))))
-      (switch-to-buffer "*Calc Trail*")
-      (select-window
-       (setq calc-embedded-calculator-window
-             (if vertical-p
-                 (split-window-vertically -6)
-               (split-window-horizontally (- (/ (window-width) 2))))))
-      (switch-to-buffer "*Calculator*")
-      (select-window main-window))))
+;; (defvar calc-embedded-trail-window nil)
+;; (defvar calc-embedded-calculator-window nil)
+;; (defadvice! calc-embedded-with-side-pannel (&rest _)
+;;   :after #'calc-do-embedded
+;;   (when calc-embedded-trail-window
+;;     (ignore-errors
+;;       (delete-window calc-embedded-trail-window))
+;;     (setq calc-embedded-trail-window nil))
+;;   (when calc-embedded-calculator-window
+;;     (ignore-errors
+;;       (delete-window calc-embedded-calculator-window))
+;;     (setq calc-embedded-calculator-window nil))
+;;   (when (and calc-embedded-info
+;;              (> (* (window-width) (window-height)) 1200))
+;;     (let ((main-window (selected-window))
+;;           (vertical-p (> (window-width) 80)))
+;;       (select-window
+;;        (setq calc-embedded-trail-window
+;;              (if vertical-p
+;;                  (split-window-horizontally (- (max 30 (/ (window-width) 3))))
+;;                (split-window-vertically (- (max 8 (/ (window-height) 4)))))))
+;;       (switch-to-buffer "*Calc Trail*")
+;;       (select-window
+;;        (setq calc-embedded-calculator-window
+;;              (if vertical-p
+;;                  (split-window-vertically -6)
+;;                (split-window-horizontally (- (/ (window-width) 2))))))
+;;       (switch-to-buffer "*Calculator*")
+;;       (select-window main-window))))
 
 ;; ====
 ;; ==== $3.3 IRC
@@ -959,23 +976,510 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 ;; ==== 3.5 字典
 ;; ====
 
+;; ====
+;; ==== 3.6 电子邮件
+;; ====
+
+
+;; =============
+;; ==== 4 语言配置
+;; =============
+
+;; ====
+;; ==== 4.1 基本配置
+;; ====
+
+;; 4.1.1 文件模板
+(set-file-template! "\\.tex$" :trigger "__" :mode 'latex-mode)
+(set-file-template! "\\.org$" :trigger "__" :mode 'org-mode)
+(set-file-template! "/LICEN[CS]E$" :trigger '+file-templates/insert-license)
+
+;; ====
+;; ==== 4.2 纯文本文件
+;; ====
+;; 支持对 ANSI 文本的颜色显示
+;; (after! text-mode
+;;   (add-hook! 'text-mode-hook
+;;              ;; Apply ANSI color codes
+;;              (with-silent-modifications
+;;                (ansi-color-apply-on-region (point-min) (point-max) t))))
+
+;; ====
+;; ==== 4.3 Org
+;; ====
+
+;; 4.3.1 系统配置
+;; $4.3.1.1 Mime Types
+;; $4.3.1.2 Git Diffs
+
+;; 4.3.2 安装包
+
+;; $4.3.2.1 Org 本身
+
+;; 4.3.2.2 视觉效果
+;; 4.3.2.2.1 表格
+(use-package! org-pretty-table
+  :commands (org-pretty-table-mode global-org-pretty-table-mode))
+;; 4.3.2.2.2 Emphasis markers 标记可见
+(use-package! org-appear
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autoemphasis t
+        org-appear-autosubmarkers t
+        org-appear-autolinks nil)
+  (run-at-time nil nil #'org-appear--set-elements))
+;; 4.3.2.2.3 标题结构
+(use-package! org-ol-tree
+  :commands org-ol-tree)
+(map! :map org-mode-map
+      :after org
+      :localleader
+      :desc "Outline" "O" #'org-ol-tree)
+
+;; 4.3.2.3 额外功能
+;; 4.3.2.3.1 Org 引用
+;; 4.3.2.3.2 Julia 支持
+;; (use-package! ob-julia
+;;   :commands org-babel-execute:julia
+;;   :config
+;;   (setq org-babel-julia-command-arguments
+;;         `("--sysimage"
+;;           ,(when-let ((img "~/.local/lib/julia.so")
+;;                       (exists? (file-exists-p img)))
+;;              (expand-file-name img))
+;;           "--threads"
+;;           ,(number-to-string (- (doom-system-cpus) 2))
+;;           "--banner=no")))
+;; 4.3.2.3.3 HTTP 请求
+(use-package! ob-http
+  :commands org-babel-execute:http)
+;; 4.3.2.3.4 Transclusion
+(use-package! org-transclusion
+  :commands org-transclusion-mode
+  :init
+  (map! :after org :map org-mode-map
+        "<f12>" #'org-transclusion-mode))
+;; 4.3.2.3.5 Heading graph
+;; 4.3.2.3.6 Cooking recipes
+(use-package! org-chef
+  :commands (org-chef-insert-recipe org-chef-get-recipe-from-url))
+;; 4.3.2.3.7 Importing with Pandoc
+(use-package! org-pandoc-import :after org)
+;; 4.3.2.3.8 文件比较
+;; (use-package! orgdiff
+;;   :defer t
+;;   :config
+;;   (defun +orgdiff-nicer-change-colours ()
+;;     (goto-char (point-min))
+;;     ;; Set red/blue based on whether chameleon is being used
+;;     (if (search-forward "%% make document follow Emacs theme" nil t)
+;;         (setq red  (substring (doom-blend 'red 'fg 0.8) 1)
+;;               blue (substring (doom-blend 'blue 'teal 0.6) 1))
+;;       (setq red  "c82829"
+;;             blue "00618a"))
+;;     (when (and (search-forward "%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF" nil t)
+;;                (search-forward "\\RequirePackage{color}" nil t))
+;;       (when (re-search-forward "definecolor{red}{rgb}{1,0,0}" (cdr (bounds-of-thing-at-point 'line)) t)
+;;         (replace-match (format "definecolor{red}{HTML}{%s}" red)))
+;;       (when (re-search-forward "definecolor{blue}{rgb}{0,0,1}" (cdr (bounds-of-thing-at-point 'line)) t)
+;;         (replace-match (format "definecolor{blue}{HTML}{%s}" blue)))))
+;;   (add-to-list 'orgdiff-latexdiff-postprocess-hooks #'+orgdiff-nicer-change-colours))
+;; 4.3.2.3.9 $Org music
+
+;; 4.3.3 行为
+
+;; 4.3.3.1 调整默认值
+;; 4.3.3.2 额外功能
+(after! org
+  (setq org-directory "~/MEGA/org"                      ; let's put files here
+        org-use-property-inheritance t              ; it's convenient to have properties inherited
+        org-log-done 'time                          ; having the time a item is done sounds convenient
+        org-list-allow-alphabetical t               ; have a. A. a) A) list bullets
+        org-export-in-background t                  ; run export processes in external emacs process
+        org-catch-invisible-edits 'smart            ; try not to accidently do weird stuff in invisible regions
+        org-export-with-sub-superscripts '{})       ; don't treat lone _ / ^ as sub/superscripts, require _{} / ^{}
+  ;; 把 :coments header-argument 设置成默认
+  (setq org-babel-default-header-args
+        '((:session . "none")
+          (:results . "replace")
+          (:exports . "code")
+          (:cache . "no")
+          (:noweb . "no")
+          (:hlines . "no")
+          (:tangle . "no")
+          (:comments . "link")))
+  ;; 移除 "visual-line-mode" 和 "auto-fill-mode"
+  (remove-hook 'text-mode-hook #'visual-line-mode)
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+  ;; 绑定一些键位
+  (map! :map evil-org-mode-map
+        :after evil-org
+        :n "g <up>" #'org-backward-heading-same-level
+        :n "g <down>" #'org-forward-heading-same-level
+        :n "g <left>" #'org-up-element
+        :n "g <right>" #'org-down-element)
+  ;; 4.3.3.2.2 零宽度字节的利用
+  (map! :map org-mode-map
+        :nie "M-SPC M-SPC" (cmd! (insert "\u200B")))
+  (defun +org-export-remove-zero-width-space (text _backend _info)
+    "Remove zero width spaces from TEXT."
+    (unless (org-export-derived-backend-p 'org)
+      (replace-regexp-in-string "\u200B" "" text)))
+  (after! ox
+    (add-to-list 'org-export-filter-final-output-functions #'+org-export-remove-zero-width-space t))
+  ;; 4.3.3.2.3 变换列表标号
+  (setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a.")))
+  ;; 4.3.3.2.4 Citation
+  ;; (after! oc
+  ;;   (defun org-ref-to-org-cite ()
+  ;;     "Attempt to convert org-ref citations to org-cite syntax."
+  ;;     (interactive)
+  ;;     (let* ((cite-conversions '(("cite" . "//b") ("Cite" . "//bc")
+  ;;                                ("nocite" . "/n")
+  ;;                                ("citep" . "") ("citep*" . "//f")
+  ;;                                ("parencite" . "") ("Parencite" . "//c")
+  ;;                                ("citeauthor" . "/a/f") ("citeauthor*" . "/a")
+  ;;                                ("citeyear" . "/na/b")
+  ;;                                ("Citep" . "//c") ("Citealp" . "//bc")
+  ;;                                ("Citeauthor" . "/a/cf") ("Citeauthor*" . "/a/c")
+  ;;                                ("autocite" . "") ("Autocite" . "//c")
+  ;;                                ("notecite" . "/l/b") ("Notecite" . "/l/bc")
+  ;;                                ("pnotecite" . "/l") ("Pnotecite" . "/l/bc")))
+  ;;            (cite-regexp (rx (regexp (regexp-opt (mapcar #'car cite-conversions) t))
+  ;;                             ":" (group (+ (not (any "\n       ,.)]}")))))))
+  ;;       (save-excursion
+  ;;         (goto-char (point-min))
+  ;;         (while (re-search-forward cite-regexp nil t)
+  ;;           (message (format "[cite%s:@%s]"
+  ;;                                  (cdr (assoc (match-string 1) cite-conversions))
+  ;;                                  (match-string 2)))
+  ;;           (replace-match (format "[cite%s:@%s]"
+  ;;                                  (cdr (assoc (match-string 1) cite-conversions))
+  ;;                                  (match-string 2))))))))
+
+  ;; 4.3.3.2.5 cdlatex
+  ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  ;; (defadvice! org-edit-latex-emv-after-insert ()
+  ;;   :after #'org-cdlatex-environment-indent
+  ;;   (org-edit-latex-environment))
+  ;; ;; 4.3.3.2.6 Spellcheck
+  ;; (add-hook 'org-mode-hook 'turn-on-flyspell)
+  ;; ;; 4.3.3.2.7 LSP 支持对于 src 代码块
+  ;; (cl-defmacro lsp-org-babel-enable (lang)
+  ;; "Support LANG in org source code block."
+  ;; (setq centaur-lsp 'lsp-mode)
+  ;; (cl-check-type lang stringp)
+  ;; (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
+  ;;         (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
+  ;; `(progn
+  ;; (defun ,intern-pre (info)
+  ;;         (let ((file-name (->> info caddr (alist-get :file))))
+  ;;         (unless file-name
+  ;;         (setq file-name (make-temp-file "babel-lsp-")))
+  ;;         (setq buffer-file-name file-name)
+  ;;         (lsp-deferred)))
+  ;; (put ',intern-pre 'function-documentation
+  ;;         (format "Enable lsp-mode in the buffer of org source block (%s)."
+  ;;                 (upcase ,lang)))
+  ;; (if (fboundp ',edit-pre)
+  ;;         (advice-add ',edit-pre :after ',intern-pre)
+  ;;         (progn
+  ;;         (defun ,edit-pre (info)
+  ;;         (,intern-pre info))
+  ;;         (put ',edit-pre 'function-documentation
+  ;;                 (format "Prepare local buffer environment for org source block (%s)."
+  ;;                         (upcase ,lang))))))))
+  ;; (defvar org-babel-lang-list
+  ;; '("go" "python" "ipython" "bash" "sh"))
+  ;; (dolist (lang org-babel-lang-list)
+  ;; (eval `(lsp-org-babel-enable ,lang)))
+  ;; 4.3.3.2.8 查看可能的输出文件 'localeader v
+  ;; (map! :map org-mode-map
+  ;;         :localleader
+  ;;         :desc "View exported file" "v" #'org-view-output-file)
+  ;; (defun org-view-output-file (&optional org-file-path)
+  ;;   "Visit buffer open on the first output file (if any) found, using `org-view-output-file-extensions'"
+  ;;   (interactive)
+  ;;   (let* ((org-file-path (or org-file-path (buffer-file-name) ""))
+  ;;          (dir (file-name-directory org-file-path))
+  ;;          (basename (file-name-base org-file-path))
+  ;;          (output-file nil))
+  ;;     (dolist (ext org-view-output-file-extensions)
+  ;;       (unless output-file
+  ;;         (when (file-exists-p
+  ;;                (concat dir basename "." ext))
+  ;;           (setq output-file (concat dir basename "." ext)))))
+  ;;     (if output-file
+  ;;         (if (member (file-name-extension output-file) org-view-external-file-extensions)
+  ;;             (browse-url-xdg-open output-file)
+  ;;           (pop-to-buffer (or (find-buffer-visiting output-file)
+  ;;                              (find-file-noselect output-file))))
+  ;;       (message "No exported file found"))))
+  ;; (defvar org-view-output-file-extensions '("pdf" "md" "rst" "txt" "tex" "html")
+  ;;   "Search for output files with these extensions, in order, viewing the first that matches")
+  ;; (defvar org-view-external-file-extensions '("html")
+  ;;   "File formats that should be opened externally.")
+  ;; (after! org-agenda
+  ;;   (org-super-agenda-mode))
+  ;; (setq org-agenda-skip-scheduled-if-done t
+  ;;       org-agenda-skip-deadline-if-done t
+  ;;       org-agenda-include-deadlines t
+  ;;       org-agenda-block-separator nil
+  ;;       org-agenda-tags-column 100 ;; from testing this seems to be a good value
+  ;;       org-agenda-compact-blocks t)
+
+  ;; 4.3.3.3 Super Agenda
+  ;; (setq org-agenda-custom-commands
+  ;;       '(("o" "Overview"
+  ;;          ((agenda "" ((org-agenda-span 'day)
+  ;;                       (org-super-agenda-groups
+  ;;                        '((:name "Today"
+  ;;                           :time-grid t
+  ;;                           :date today
+  ;;                           :todo "TODAY"
+  ;;                           :scheduled today
+  ;;                           :order 1)))))
+  ;;           (alltodo "" ((org-agenda-overriding-header "")
+  ;;                        (org-super-agenda-groups
+  ;;                         '((:name "Next to do"
+  ;;                            :todo "NEXT"
+  ;;                            :order 1)
+  ;;                           (:name "Important"
+  ;;                            :tag "Important"
+  ;;                            :priority "A"
+  ;;                            :order 6)
+  ;;                           (:name "Due Today"
+  ;;                            :deadline today
+  ;;                            :order 2)
+  ;;                           (:name "Due Soon"
+  ;;                            :deadline future
+  ;;                            :order 8)
+  ;;                           (:name "Overdue"
+  ;;                            :deadline past
+  ;;                            :face error
+  ;;                            :order 7)
+  ;;                           (:name "Assignments"
+  ;;                            :tag "Assignment"
+  ;;                            :order 10)
+  ;;                           (:name "Issues"
+  ;;                            :tag "Issue"
+  ;;                            :order 12)
+  ;;                           (:name "Emacs"
+  ;;                            :tag "Emacs"
+  ;;                            :order 13)
+  ;;                           (:name "Projects"
+  ;;                            :tag "Project"
+  ;;                            :order 14)
+  ;;                           (:name "Research"
+  ;;                            :tag "Research"
+  ;;                            :order 15)
+  ;;                           (:name "To read"
+  ;;                            :tag "Read"
+  ;;                            :order 30)
+  ;;                           (:name "Waiting"
+  ;;                            :todo "WAITING"
+  ;;                            :order 20)
+  ;;                           (:name "University"
+  ;;                            :tag "uni"
+  ;;                            :order 32)
+  ;;                           (:name "Trivial"
+  ;;                            :priority<= "E"
+  ;;                            :tag ("Trivial" "Unimportant")
+  ;;                            :todo ("SOMEDAY" )
+  ;;                            :order 90)
+  ;;                           (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
+
+  ;; ;; 4.3.3.4 Capture
+  ;; (after! org-capture
+  ;;     (defun +doct-icon-declaration-to-icon (declaration)
+  ;;   "Convert :icon declaration to icon"
+  ;;   (let ((name (pop declaration))
+  ;;         (set  (intern (concat "all-the-icons-" (plist-get declaration :set))))
+  ;;         (face (intern (concat "all-the-icons-" (plist-get declaration :color))))
+  ;;         (v-adjust (or (plist-get declaration :v-adjust) 0.01)))
+  ;;     (apply set `(,name :face ,face :v-adjust ,v-adjust))))
+
+  ;; (defun +doct-iconify-capture-templates (groups)
+  ;;   "Add declaration's :icon to each template group in GROUPS."
+  ;;   (let ((templates (doct-flatten-lists-in groups)))
+  ;;     (setq doct-templates (mapcar (lambda (template)
+  ;;                                    (when-let* ((props (nthcdr (if (= (length template) 4) 2 5) template))
+  ;;                                                (spec (plist-get (plist-get props :doct) :icon)))
+  ;;                                      (setf (nth 1 template) (concat (+doct-icon-declaration-to-icon spec)
+  ;;                                                                     "\t"
+  ;;                                                                     (nth 1 template))))
+  ;;                                    template)
+  ;;                                  templates))))
+
+  ;; (setq doct-after-conversion-functions '(+doct-iconify-capture-templates))
+  ;; (defvar +org-capture-recipies  "~/MEGA/org/recipies.org")
+  ;; (defun set-org-capture-templates ()
+  ;;   (setq org-capture-templates
+  ;;         (doct `(("Personal todo" :keys "t"
+  ;;                  :icon ("checklist" :set "octicon" :color "green")
+  ;;                  :file +org-capture-todo-file
+  ;;                  :prepend t
+  ;;                  :headline "Inbox"
+  ;;                  :type entry
+  ;;                  :template ("* TODO %?"
+  ;;                             "%i %a"))
+  ;;                 ("Personal note" :keys "n"
+  ;;                  :icon ("sticky-note-o" :set "faicon" :color "green")
+  ;;                  :file +org-capture-todo-file
+  ;;                  :prepend t
+  ;;                  :headline "Inbox"
+  ;;                  :type entry
+  ;;                  :template ("* %?"
+  ;;                             "%i %a"))
+  ;;                 ("Email" :keys "e"
+  ;;                  :icon ("envelope" :set "faicon" :color "blue")
+  ;;                  :file +org-capture-todo-file
+  ;;                  :prepend t
+  ;;                  :headline "Inbox"
+  ;;                  :type entry
+  ;;                  :template ("* TODO %^{type|reply to|contact} %\\3 %? :email:"
+  ;;                             "Send an email %^{urgancy|soon|ASAP|anon|at some point|eventually} to %^{recipiant}"
+  ;;                             "about %^{topic}"
+  ;;                             "%U %i %a"))
+  ;;                 ("Interesting" :keys "i"
+  ;;                  :icon ("eye" :set "faicon" :color "lcyan")
+  ;;                  :file +org-capture-todo-file
+  ;;                  :prepend t
+  ;;                  :headline "Interesting"
+  ;;                  :type entry
+  ;;                  :template ("* [ ] %{desc}%? :%{i-type}:"
+  ;;                             "%i %a")
+  ;;                  :children (("Webpage" :keys "w"
+  ;;                              :icon ("globe" :set "faicon" :color "green")
+  ;;                              :desc "%(org-cliplink-capture) "
+  ;;                              :i-type "read:web")
+  ;;                             ("Article" :keys "a"
+  ;;                              :icon ("file-text" :set "octicon" :color "yellow")
+  ;;                              :desc ""
+  ;;                              :i-type "read:reaserch")
+  ;;                             ("\tRecipie" :keys "r"
+  ;;                              :icon ("spoon" :set "faicon" :color "dorange")
+  ;;                              :file +org-capture-recipies
+  ;;                              :headline "Unsorted"
+  ;;                              :template "%(org-chef-get-recipe-from-url)")
+  ;;                             ("Information" :keys "i"
+  ;;                              :icon ("info-circle" :set "faicon" :color "blue")
+  ;;                              :desc ""
+  ;;                              :i-type "read:info")
+  ;;                             ("Idea" :keys "I"
+  ;;                              :icon ("bubble_chart" :set "material" :color "silver")
+  ;;                              :desc ""
+  ;;                              :i-type "idea")))
+  ;;                 ("Tasks" :keys "k"
+  ;;                  :icon ("inbox" :set "octicon" :color "yellow")
+  ;;                  :file +org-capture-todo-file
+  ;;                  :prepend t
+  ;;                  :headline "Tasks"
+  ;;                  :type entry
+  ;;                  :template ("* TODO %? %^G%{extra}"
+  ;;                             "%i %a")
+  ;;                  :children (("General Task" :keys "k"
+  ;;                              :icon ("inbox" :set "octicon" :color "yellow")
+  ;;                              :extra "")
+  ;;                             ("Task with deadline" :keys "d"
+  ;;                              :icon ("timer" :set "material" :color "orange" :v-adjust -0.1)
+  ;;                              :extra "\nDEADLINE: %^{Deadline:}t")
+  ;;                             ("Scheduled Task" :keys "s"
+  ;;                              :icon ("calendar" :set "octicon" :color "orange")
+  ;;                              :extra "\nSCHEDULED: %^{Start time:}t")))
+  ;;                 ("Project" :keys "p"
+  ;;                  :icon ("repo" :set "octicon" :color "silver")
+  ;;                  :prepend t
+  ;;                  :type entry
+  ;;                  :headline "Inbox"
+  ;;                  :template ("* %{time-or-todo} %?"
+  ;;                             "%i"
+  ;;                             "%a")
+  ;;                  :file ""
+  ;;                  :custom (:time-or-todo "")
+  ;;                  :children (("Project-local todo" :keys "t"
+  ;;                              :icon ("checklist" :set "octicon" :color "green")
+  ;;                              :time-or-todo "TODO"
+  ;;                              :file +org-capture-project-todo-file)
+  ;;                             ("Project-local note" :keys "n"
+  ;;                              :icon ("sticky-note" :set "faicon" :color "yellow")
+  ;;                              :time-or-todo "%U"
+  ;;                              :file +org-capture-project-notes-file)
+  ;;                             ("Project-local changelog" :keys "c"
+  ;;                              :icon ("list" :set "faicon" :color "blue")
+  ;;                              :time-or-todo "%U"
+  ;;                              :heading "Unreleased"
+  ;;                              :file +org-capture-project-changelog-file)))
+  ;;                 ("\tCentralised project templates"
+  ;;                  :keys "o"
+  ;;                  :type entry
+  ;;                  :prepend t
+  ;;                  :template ("* %{time-or-todo} %?"
+  ;;                             "%i"
+  ;;                             "%a")
+  ;;                  :children (("Project todo"
+  ;;                              :keys "t"
+  ;;                              :prepend nil
+  ;;                              :time-or-todo "TODO"
+  ;;                              :heading "Tasks"
+  ;;                              :file +org-capture-central-project-todo-file)
+  ;;                             ("Project note"
+  ;;                              :keys "n"
+  ;;                              :time-or-todo "%U"
+  ;;                              :heading "Notes"
+  ;;                              :file +org-capture-central-project-notes-file)
+  ;;                             ("Project changelog"
+  ;;                              :keys "c"
+  ;;                              :time-or-todo "%U"
+  ;;                              :heading "Unreleased"
+  ;;                              :file +org-capture-central-project-changelog-file)))))))
+
+  ;; (set-org-capture-templates)
+  ;; (unless (display-graphic-p)
+  ;;   (add-hook 'server-after-make-frame-hook
+  ;;             (defun org-capture-reinitialise-hook ()
+  ;;               (when (display-graphic-p)
+  ;;                 (set-org-capture-templates)
+  ;;                 (remove-hook 'server-after-make-frame-hook
+  ;;                              #'org-capture-reinitialise-hook))))))
+
+                                        )
+
+;; 4.3.3.2 额外功能
+;; 4.3.3.2.1 创建 Org buffer 变的更简单
+(evil-define-command evil-buffer-org-new (count file)
+  "Creates a new ORG buffer replacing the current window, optionally
+   editing a certain FILE"
+  :repeat nil
+  (interactive "P<f>")
+  (if file
+      (evil-edit file)
+    (let ((buffer (generate-new-buffer "*new org*")))
+      (set-window-buffer nil buffer)
+      (with-current-buffer buffer
+        (org-mode)))))
+(map! :leader
+      (:prefix "b"
+       :desc "New empty ORG buffer" "o" #'evil-buffer-org-new))
+;; 4.3.3.2.4 Citation
+;; 4.3.3.2.5 cdlatex
+
+;; 4.3.3.3 Super Agenda
+(use-package! org-super-agenda
+  :commands org-super-agenda-mode)
+
+;; 4.3.3.4 Capture
+(use-package! doct
+  :commands doct)
+
 ;; Language Setting
 ;; Python
 (after! lsp-python-ms
   (set-lsp-priority! 'mspyls 1))
 
-
-
 (beacon-mode 1)
 
-(use-package! org-pandoc-import :after org)
 
-;; ============
-;; ORG-SETTING
-;; ============
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/MEGA/org")
 
 ;; org-download
 (require 'org-download)
@@ -1002,3 +1506,20 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 ;; (setq org-elp-split-fraction 0.2)
 ;; (setq org-elp-buffer-name "*Equation Live*")
 ;; (setq org-elp-idle-time 0.5)
+
+;; org preview 设置
+(add-to-list 'org-preview-latex-process-alist '(xdvsvgm :progams
+							("xelatex" "dvisvgm")
+							:discription "xdv > svg"
+							:message "you need install the programs: xelatex and dvisvgm."
+							:image-input-type "xdv"
+							:image-output-type "svg"
+							:image-size-adjust (1.7 . 1.5)
+							:latex-compiler ("xelatex -interaction nonstopmode -no-pdf -output-directory %o %f")
+							:image-converter ("dvisvgm %f -n -b min -c %S -o %O")))
+(setq org-preview-latex-default-process 'xdvsvgm)
+
+(use-package org-fragtog
+  :after org
+  :hook
+  (org-mode . org-fragtog-mode))

@@ -2,7 +2,7 @@ case "$(uname -s)" in
     Darwin)
         eval "$(/opt/homebrew/bin/brew shellenv)"
         export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
-        export PATH="/opt/homebrew/opt/bash/bin:$PATH"
+        eval "$(/usr/libexec/path_helper)"
         ;;
     Linux)
         ;;
@@ -115,10 +115,31 @@ alias \
 	g="git" \
 	sdn="shutdown -h now"
 
-#+Doom emacs
+# Doom emacs
 export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # basher
 export PATH="$HOME/.basher/bin:$PATH"
 
 eval "$(basher init - zsh)"
+
+# Vterm -> Emacs
+# if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+#     function magit () {
+#         vterm_cmd magit-status "$(realpath "${@:-.}")"
+#     }
+# fi
+
+# Vterm config
+vterm_printf(){
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+

@@ -64,10 +64,10 @@
 (package! modus-themes :pin "392ebb115b07f8052d512ec847619387d109edd6")
 
 ;; 2.4.3 Theme magic 终端的主题
-(package! theme-magic :pin "844c4311bd26ebafd4b6a1d72ddcc65d87f074e3")
+;; (package! theme-magic :pin "844c4311bd26ebafd4b6a1d72ddcc65d87f074e3")
 
 ;; 2.4.6 Keycast 按键显示工具
-(package! keycast :pin "72d9add8ba16e0cae8cfcff7fc050fa75e493b4e")
+;; (package! keycast :pin "72d9add8ba16e0cae8cfcff7fc050fa75e493b4e")
 
 
 ;; 2.4.7 Screencast
@@ -115,36 +115,91 @@
                            :files ("*.el" "calctex/*.el" "calctex-contrib/*.el" "org-calctex/*.el" "vendor"))
   :pin "67a2e76847a9ea9eff1f8e4eb37607f84b380ebb")
 
+;; ====
+;; ==== $3.3 IRC
+;; ====
+
+
+;; ====
+;; ==== 3.4 新闻订阅 RSS
+;; ====
+
+;; ====
+;; ==== 3.5 字典
+;; ====
+
+;; ====
+;; ==== 3.6 电子邮件
+;; ====
+
+
+;; =============
+;; ==== 4 语言配置
+;; =============
+
+;; ====
+;; ==== 4.1 基本配置
+;; ====
+
+;; ====
+;; ==== 4.2 纯文本文件
+;; ====
+
+
+;; ====
+;; ==== 4.3 Org
+;; ====
+
+;; 4.3.1 系统配置
+;; $4.3.1.1 Mime Types
+;; $4.3.1.2 Git Diffs
+
+;; 4.3.2 安装包
+
+;; $4.3.2.1 Org 本身
+
+;; 4.3.2.2 视觉效果
+;; 4.3.2.2.1 表格
+(package! org-pretty-table
+  :recipe (:host github :repo "Fuco1/org-pretty-table") :pin
+  "87772a9469d91770f87bfa788580fca69b9e697a")
+;; 4.3.2.2.2 Emphasis markers 标记可见
+(package! org-appear :recipe (:host github :repo "awth13/org-appear")
+  :pin "148aa124901ae598f69320e3dcada6325cdc2cf0")
+;; 4.3.2.2.3 标题结构
+(package! org-ol-tree :recipe (:host github :repo "Townk/org-ol-tree")
+  :pin "207c748aa5fea8626be619e8c55bdb1c16118c25")
+
+;; 4.3.2.3 额外功能
+;; 4.3.2.3.1 Org 引用
+(package! org-ref :pin "3ca9beb744621f007d932deb8a4197467012c23a")
+;; 4.3.2.3.2 Julia 支持
+(package! ob-julia :recipe (:local-repo "lisp/ob-julia" :files ("*.el" "julia")))
+;; 4.3.2.3.3 HTTP 请求
+(package! ob-http :pin "b1428ea2a63bcb510e7382a1bf5fe82b19c104a7")
+;; 4.3.2.3.4 Transclusion
+(package! org-transclusion :recipe (:host github :repo "nobiot/org-transclusion")
+  :pin "8cbbade1e3237200c2140741f39ff60176e703e7")
+;; 4.3.2.3.5 Heading graph
+(package! org-graph-view :recipe (:host github :repo "alphapapa/org-graph-view") :pin "13314338d70d2c19511efccc491bed3ca0758170")
+;; 4.3.2.3.6 Cooking recipes
+(package! org-chef :pin "a97232b4706869ecae16a1352487a99bc3cf97af")
+;; 4.3.2.3.7 Improting with Pandoc
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
+;; 4.3.2.3.8 文件比较
+;; (package! orgdiff :recipe (:local-repo "lisp/orgdiff"))
 
-(package! org-pretty-table
-  :recipe (:host github :repo "Fuco1/org-pretty-table") :pin
-  "87772a9469d91770f87bfa788580fca69b9e697a")
-(use-package! org-pretty-table
-  :commands (org-pretty-table-mode global-org-pretty-table-mode))
-
-(package! org-appear :recipe (:host github :repo "awth13/org-appear")
-  :pin "148aa124901ae598f69320e3dcada6325cdc2cf0")
-(use-package! org-appear
-  :hook (org-mode . org-appear-mode)
-  :config
-  (setq org-appear-autoemphasis t
-        org-appear-autosubmarkers t
-        org-appear-autolinks nil)
-  ;; for proper first-time setup, `org-appear--set-elements'
-  ;; needs to be run after other hooks have acted.
-  (run-at-time nil nil #'org-appear--set-elements))
-
+;; 4.3.3 表现
+;; 4.3.3. Super Agenda
 (package! org-super-agenda :pin "a5557ea4f51571ee9def3cd9a1ab1c38f1a27af7")
-(use-package! org-super-agenda
-  :commands org-super-agenda-mode)
 
+;; 4.3.3.4 Capture
 (package! doct
   :recipe (:host github :repo "progfolio/doct")
   :pin "67fc46c8a68989b932bce879fbaa62c6a2456a1f")
-(use-package! doct
-  :commands doct)
 
+;; org-fragtog
+(package! org-fragtog)
