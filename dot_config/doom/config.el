@@ -528,10 +528,10 @@
     (define-key evil-normal-state-map (kbd "g~") 'evil-operator-string-inflection)))
 
 ;; 2.3.18 Smart parentheses
-(sp-local-pair
- '(org-mode)
- "<<" ">>"
- :actions '(insert))
+;; (sp-local-pair
+;;  '(org-mode)
+;;  "<<" ">>"
+;;  :actions '(insert))
 
 ;; ====
 ;; ==== 2.4 Visuals 视觉效果
@@ -671,33 +671,33 @@
 
 ;; 2.4.8 Mixed pitch
 ;; From :ui zen
-(defvar mixed-pitch-modes '(org-mode LaTeX-mode markdown-mode gfm-mode Info-mode)
-  "Modes that `mixed-pitch-mode' should be enabled in, but only after UI initialisation.")
-(defun init-mixed-pitch-h ()
-  "Hook `mixed-pitch-mode' into each mode in `mixed-pitch-modes'.
-Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
-  (when (memq major-mode mixed-pitch-modes)
-    (mixed-pitch-mode 1))
-  (dolist (hook mixed-pitch-modes)
-    (add-hook (intern (concat (symbol-name hook) "-hook")) #'mixed-pitch-mode)))
-(add-hook 'doom-init-ui-hook #'init-mixed-pitch-h)
-(autoload #'mixed-pitch-serif-mode "mixed-pitch"
-  "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch." t)
-(after! mixed-pitch
-  (defface variable-pitch-serif
-    '((t (:family "serif")))
-    "A variable-pitch face with serifs."
-    :group 'basic-faces)
-  (setq mixed-pitch-set-height t)
-  (setq variable-pitch-serif-font (font-spec :family "Alegreya" :size 27))
-  (set-face-attribute 'variable-pitch-serif nil :font variable-pitch-serif-font)
-  (defun mixed-pitch-serif-mode (&optional arg)
-    "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch."
-    (interactive)
-    (let ((mixed-pitch-face 'variable-pitch-serif))
-      (mixed-pitch-mode (or arg 'toggle)))))
-(set-char-table-range composition-function-table ?f '(["\\(?:ff?[fijlt]\\)" 0 font-shape-gstring]))
-(set-char-table-range composition-function-table ?T '(["\\(?:Th\\)" 0 font-shape-gstring]))
+;; (defvar mixed-pitch-modes '(org-mode LaTeX-mode markdown-mode gfm-mode Info-mode)
+;;   "Modes that `mixed-pitch-mode' should be enabled in, but only after UI initialisation.")
+;; (defun init-mixed-pitch-h ()
+;;   "Hook `mixed-pitch-mode' into each mode in `mixed-pitch-modes'.
+;; Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
+;;   (when (memq major-mode mixed-pitch-modes)
+;;     (mixed-pitch-mode 1))
+;;   (dolist (hook mixed-pitch-modes)
+;;     (add-hook (intern (concat (symbol-name hook) "-hook")) #'mixed-pitch-mode)))
+;; (add-hook 'doom-init-ui-hook #'init-mixed-pitch-h)
+;; (autoload #'mixed-pitch-serif-mode "mixed-pitch"
+;;   "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch." t)
+;; (after! mixed-pitch
+;;   (defface variable-pitch-serif
+;;     '((t (:family "serif")))
+;;     "A variable-pitch face with serifs."
+;;     :group 'basic-faces)
+;;   (setq mixed-pitch-set-height t)
+;;   (setq variable-pitch-serif-font (font-spec :family "Alegreya" :size 27))
+;;   (set-face-attribute 'variable-pitch-serif nil :font variable-pitch-serif-font)
+;;   (defun mixed-pitch-serif-mode (&optional arg)
+;;     "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch."
+;;     (interactive)
+;;     (let ((mixed-pitch-face 'variable-pitch-serif))
+;;       (mixed-pitch-mode (or arg 'toggle)))))
+;; (set-char-table-range composition-function-table ?f '(["\\(?:ff?[fijlt]\\)" 0 font-shape-gstring]))
+;; (set-char-table-range composition-function-table ?T '(["\\(?:Th\\)" 0 font-shape-gstring]))
 
 ;; 2.4.9 Marginalia
 ;; From :completion vertico
@@ -764,53 +764,53 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
 ;; 2.4.13 Writeroom
 ;; From :ui zen
-(setq +zen-text-scale 0.7)
-(defvar +zen-serif-p t
-  "Whether to use a serifed font with `mixed-pitch-mode'.")
-(after! writeroom-mode
-  (defvar-local +zen--original-org-indent-mode-p nil)
-  (defvar-local +zen--original-mixed-pitch-mode-p nil)
-  (defvar-local +zen--original-org-pretty-table-mode-p nil)
-  (defun +zen-enable-mixed-pitch-mode-h ()
-    "Enable `mixed-pitch-mode' when in `+zen-mixed-pitch-modes'."
-    (when (apply #'derived-mode-p +zen-mixed-pitch-modes)
-      (if writeroom-mode
-          (progn
-            (setq +zen--original-mixed-pitch-mode-p mixed-pitch-mode)
-            (funcall (if +zen-serif-p #'mixed-pitch-serif-mode #'mixed-pitch-mode) 1))
-        (funcall #'mixed-pitch-mode (if +zen--original-mixed-pitch-mode-p 1 -1)))))
-  (pushnew! writeroom--local-variables
-            'display-line-numbers
-            'visual-fill-column-width
-            'org-adapt-indentation
-            'org-superstar-headline-bullets-list
-            'org-superstar-remove-leading-stars)
-  (add-hook 'writeroom-mode-enable-hook
-            (defun +zen-prose-org-h ()
-              "Reformat the current Org buffer appearance for prose."
-              (when (eq major-mode 'org-mode)
-                (setq display-line-numbers nil
-                      visual-fill-column-width 60
-                      org-adapt-indentation nil)
-                (when (featurep 'org-superstar)
-                  (setq-local org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛")
-                              ;; org-superstar-headline-bullets-list '("🙐" "🙑" "🙒" "🙓" "🙔" "🙕" "🙖" "🙗")
-                              org-superstar-remove-leading-stars t)
-                  (org-superstar-restart))
-                (setq
-                 +zen--original-org-indent-mode-p org-indent-mode
-                 +zen--original-org-pretty-table-mode-p (bound-and-true-p org-pretty-table-mode))
-                (org-indent-mode -1)
-                (org-pretty-table-mode 1))))
-  (add-hook 'writeroom-mode-disable-hook
-            (defun +zen-nonprose-org-h ()
-              "Reverse the effect of `+zen-prose-org'."
-              (when (eq major-mode 'org-mode)
-                (when (featurep 'org-superstar)
-                  (org-superstar-restart))
-                (when +zen--original-org-indent-mode-p (org-indent-mode 1))
-                ;; (unless +zen--original-org-pretty-table-mode-p (org-pretty-table-mode -1))
-                ))))
+;; (setq +zen-text-scale 0.7)
+;; (defvar +zen-serif-p t
+;;   "Whether to use a serifed font with `mixed-pitch-mode'.")
+;; (after! writeroom-mode
+;;   (defvar-local +zen--original-org-indent-mode-p nil)
+;;   (defvar-local +zen--original-mixed-pitch-mode-p nil)
+;;   (defvar-local +zen--original-org-pretty-table-mode-p nil)
+;;   (defun +zen-enable-mixed-pitch-mode-h ()
+;;     "Enable `mixed-pitch-mode' when in `+zen-mixed-pitch-modes'."
+;;     (when (apply #'derived-mode-p +zen-mixed-pitch-modes)
+;;       (if writeroom-mode
+;;           (progn
+;;             (setq +zen--original-mixed-pitch-mode-p mixed-pitch-mode)
+;;             (funcall (if +zen-serif-p #'mixed-pitch-serif-mode #'mixed-pitch-mode) 1))
+;;         (funcall #'mixed-pitch-mode (if +zen--original-mixed-pitch-mode-p 1 -1)))))
+;;   (pushnew! writeroom--local-variables
+;;             'display-line-numbers
+;;             'visual-fill-column-width
+;;             'org-adapt-indentation
+;;             'org-superstar-headline-bullets-list
+;;             'org-superstar-remove-leading-stars)
+;;   (add-hook 'writeroom-mode-enable-hook
+;;             (defun +zen-prose-org-h ()
+;;               "Reformat the current Org buffer appearance for prose."
+;;               (when (eq major-mode 'org-mode)
+;;                 (setq display-line-numbers nil
+;;                       visual-fill-column-width 60
+;;                       org-adapt-indentation nil)
+;;                 (when (featurep 'org-superstar)
+;;                   (setq-local org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛")
+;;                               ;; org-superstar-headline-bullets-list '("🙐" "🙑" "🙒" "🙓" "🙔" "🙕" "🙖" "🙗")
+;;                               org-superstar-remove-leading-stars t)
+;;                   (org-superstar-restart))
+;;                 (setq
+;;                  +zen--original-org-indent-mode-p org-indent-mode
+;;                  +zen--original-org-pretty-table-mode-p (bound-and-true-p org-pretty-table-mode))
+;;                 (org-indent-mode -1)
+;;                 (org-pretty-table-mode 1))))
+;;   (add-hook 'writeroom-mode-disable-hook
+;;             (defun +zen-nonprose-org-h ()
+;;               "Reverse the effect of `+zen-prose-org'."
+;;               (when (eq major-mode 'org-mode)
+;;                 (when (featurep 'org-superstar)
+;;                   (org-superstar-restart))
+;;                 (when +zen--original-org-indent-mode-p (org-indent-mode 1))
+;;                 ;; (unless +zen--original-org-pretty-table-mode-p (org-pretty-table-mode -1))
+;;                 ))))
 
 ;; 2.4.14 Treemacs 一个文件侧边栏工具
 ;; 我不需要改动
@@ -1051,18 +1051,18 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 ;;           ,(number-to-string (- (doom-system-cpus) 2))
 ;;           "--banner=no")))
 ;; 4.3.2.3.3 HTTP 请求
-(use-package! ob-http
-  :commands org-babel-execute:http)
+;; (use-package! ob-http
+;;   :commands org-babel-execute:http)
 ;; 4.3.2.3.4 Transclusion
-(use-package! org-transclusion
-  :commands org-transclusion-mode
-  :init
-  (map! :after org :map org-mode-map
-        "<f12>" #'org-transclusion-mode))
+;; (use-package! org-transclusion
+;;   :commands org-transclusion-mode
+;;   :init
+;;   (map! :after org :map org-mode-map
+;;         "<f12>" #'org-transclusion-mode))
 ;; 4.3.2.3.5 Heading graph
 ;; 4.3.2.3.6 Cooking recipes
-(use-package! org-chef
-  :commands (org-chef-insert-recipe org-chef-get-recipe-from-url))
+;; (use-package! org-chef
+;;   :commands (org-chef-insert-recipe org-chef-get-recipe-from-url))
 ;; 4.3.2.3.7 Importing with Pandoc
 (use-package! org-pandoc-import :after org)
 ;; 4.3.2.3.8 文件比较
@@ -1095,7 +1095,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         org-use-property-inheritance t              ; it's convenient to have properties inherited
         org-log-done 'time                          ; having the time a item is done sounds convenient
         org-list-allow-alphabetical t               ; have a. A. a) A) list bullets
-        org-export-in-background t                  ; run export processes in external emacs process
+        ;; org-export-in-background t                  ; run export processes in external emacs process
         org-catch-invisible-edits 'smart            ; try not to accidently do weird stuff in invisible regions
         org-export-with-sub-superscripts '{})       ; don't treat lone _ / ^ as sub/superscripts, require _{} / ^{}
   ;; 把 :coments header-argument 设置成默认
