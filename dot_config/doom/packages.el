@@ -203,3 +203,6 @@
 
 ;; org-fragtog
 (package! org-fragtog)
+
+;; org-reveal
+(package! ox-reveal)

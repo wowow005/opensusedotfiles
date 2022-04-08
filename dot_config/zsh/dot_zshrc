@@ -1,6 +1,7 @@
 case "$(uname -s)" in
     Darwin)
         eval "$(/opt/homebrew/bin/brew shellenv)"
+        export PATH="/opt/homebrew/bin:$PATH"
         export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
         eval "$(/usr/libexec/path_helper)"
         ;;
@@ -38,7 +39,7 @@ setopt interactive_comments
 # enable only git
 zstyle ':vcs_info:*' enable git
 
-# setup a hook that runs before every ptompt.
+# setup a hook that runs before every prompt.
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
 setopt prompt_subst
@@ -122,24 +123,3 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.basher/bin:$PATH"
 
 eval "$(basher init - zsh)"
-
-# Vterm -> Emacs
-# if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-#     function magit () {
-#         vterm_cmd magit-status "$(realpath "${@:-.}")"
-#     }
-# fi
-
-# Vterm config
-vterm_printf(){
-    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
-        # Tell tmux to pass the escape sequences through
-        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-    elif [ "${TERM%%-*}" = "screen" ]; then
-        # GNU screen (screen, screen-256color, screen-256color-bce)
-        printf "\eP\e]%s\007\e\\" "$1"
-    else
-        printf "\e]%s\e\\" "$1"
-    fi
-}
-

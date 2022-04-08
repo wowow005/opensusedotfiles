@@ -235,6 +235,11 @@
 
 ;; $1.4.6 提示运行安装脚本
 
+;; 1.4.7 文学编程支持
+(setq org-confirm-babel-evaluate nil
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t)
+
 
 ;; ========================
 ;; ==== 2 PACKAGES 安装包设置
@@ -302,7 +307,8 @@
 ;; Vterm -> Emacs
 ;; whitelist
 ;; (add-to-list 'vterm-eval-cmds '("magit-status" magit-status))
-
+(setq-default explicit-shell-file-name "/bin/zsh")
+(setq-default shell-file-name "/bin/zsh")
 
 ;; 2.3.1 Abbrev
 (add-hook 'doom-first-buffer-hook
