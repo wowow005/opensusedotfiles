@@ -6,7 +6,7 @@ Managed by [[https://www.chezmoi.io/][chezmoi]].
 
 Manage your dotfiles across multiple diverse machines, securely.
 
-You can install chezmoi and my dotfiles one a new, empty machine with a single
+You can install chezmoi and my dotfiles on a new, empty machine with a single
 command.
 
 #+begin_src shell
