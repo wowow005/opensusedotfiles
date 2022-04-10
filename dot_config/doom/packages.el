@@ -49,6 +49,9 @@
 ;; 2.3.17 String inflection
 (package! string-inflection :pin "fd7926ac17293e9124b31f706a4e8f38f6a9b855")
 
+;; 2.3.18 benchmark
+(package! benchmark-init)
+
 ;; ====
 ;; ==== 2.4 Visuals 视觉效果
 ;; ====
