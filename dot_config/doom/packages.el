@@ -174,7 +174,7 @@
 ;; 4.3.2.3.1 Org 引用
 (package! org-ref :pin "3ca9beb744621f007d932deb8a4197467012c23a")
 ;; 4.3.2.3.2 Julia 支持
-(package! ob-julia :recipe (:local-repo "lisp/ob-julia" :files ("*.el" "julia")))
+;; (package! ob-julia :recipe (:local-repo "lisp/ob-julia" :files ("*.el" "julia")))
 ;; 4.3.2.3.3 HTTP 请求
 (package! ob-http :pin "b1428ea2a63bcb510e7382a1bf5fe82b19c104a7")
 ;; 4.3.2.3.4 Transclusion
