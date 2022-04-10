@@ -125,60 +125,6 @@
 
 
 ;; 1.3.6 异步配置混乱 - 我对 literate 还不熟悉
-;; (defvar +literate-tangle--proc nil)
-;; (defvar +literate-tangle--proc-start-time nil)
-;; (defadvice! +literate-tangle-async-h ()
-;;   "A very simplified version of `+literate-tangle-h', but async."
-;;   :override #'+literate-tangle-h
-;;   (unless (getenv "__NOTANGLE")
-;;     (let ((default-directory doom-private-dir))
-;;       (when +literate-tangle--proc
-;;         (message "Killing outdated tangle process...")
-;;         (set-process-sentinel +literate-tangle--proc #'ignore)
-;;         (kill-process +literate-tangle--proc)
-;;         (sit-for 0.3)) ; ensure the message is seen for a bit
-;;       (setq +literate-tangle--proc-start-time (float-time)
-;;             +literate-tangle--proc
-;;             (start-process "tangle-config"
-;;                            (get-buffer-create " *tangle config*")
-;;                            "emacs" "--batch" "--eval"
-;;                            (format "(progn \
-;; (require 'ox) \
-;; (require 'ob-tangle) \
-;; (setq org-confirm-babel-evaluate nil \
-;;       org-inhibit-startup t \
-;;       org-mode-hook nil \
-;;       write-file-functions nil \
-;;       before-save-hook nil \
-;;       after-save-hook nil \
-;;       vc-handled-backends nil \
-;;       org-startup-folded nil \
-;;       org-startup-indented nil) \
-;; (org-babel-tangle-file \"%s\" \"%s\"))"
-;;                                    +literate-config-file
-;;                                    (expand-file-name (concat doom-module-config-file ".el")))))
-;;       (set-process-sentinel +literate-tangle--proc #'+literate-tangle--sentinel)
-;;       (run-at-time nil nil (lambda () (message "Tangling config.org"))) ; ensure shown after a save message
-;;       "Tangling config.org...")))
-;; (defun +literate-tangle--sentinel (process signal)
-;;   (cond
-;;    ((and (eq 'exit (process-status process))
-;;          (= 0 (process-exit-status process)))
-;;     (message "Tangled config.org sucessfully (took %.1fs)"
-;;              (- (float-time) +literate-tangle--proc-start-time))
-;;     (setq +literate-tangle--proc nil))
-;;    ((memq (process-status process) (list 'exit 'signal))
-;;     (+popup-buffer (get-buffer " *tangle config*"))
-;;     (message "Failed to tangle config.org (after %.1fs)"
-;;              (- (float-time) +literate-tangle--proc-start-time))
-;;     (setq +literate-tangle--proc nil))))
-
-;; (defun +literate-tangle-check-finished ()
-;;   (when (and (process-live-p +literate-tangle--proc)
-;;              (yes-or-no-p "Config is currently retangling, would you please wait a few seconds?"))
-;;     (switch-to-buffer " *tangle config*")
-;;     (signal 'quit nil)))
-;; (add-hook! 'kill-emacs-hook #'+literate-tangle-check-finished)
 
 ;; 1.3.7 主面板快速操作 - 对我来说不必要, 而且不稳定
 ;; (defun +doom-dashboard-setup-modified-keymap ()
@@ -284,7 +230,7 @@
    '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "◃\\1"))
    ))
 
-;; Use editorconfig
+;; 2.2.5 Use editorconfig
 (setq lsp-enable-indentation nil)
 (setq editorconfig-mode 1)
 
@@ -293,20 +239,6 @@
 ;; ====
 
 ;; 2.3.0 Vterm 让 Emacs 中的终端更好用
-;; From :term vterm
-;; Emacs -> Vterm
-;; (require 'vterm)
-;; (defun run-cmd-in-vterm (cmd)
-;;   (let* ((name (concat "#Vterm" cmd))
-;;          (cmd (concat cmd "\n"))
-;;          (vterm-buffer (vterm--internal (lambda (_) nil) name)))
-;;     (with-current-buffer vterm-buffer
-;;       ;; don's show in vterm-toogle
-;;       (setq-local vterm-toggle--dedicated-p t)
-;;       (vterm-send-string cmd))))
-;; Vterm -> Emacs
-;; whitelist
-;; (add-to-list 'vterm-eval-cmds '("magit-status" magit-status))
 (setq-default explicit-shell-file-name "/bin/zsh")
 (setq-default shell-file-name "/bin/zsh")
 
@@ -316,7 +248,7 @@
             (setq-default abbrev-mode t)
             (setq abbrev-file-name (expand-file-name "abbrev.el" doom-private-dir))))
 
-;; 2.3.2 非常大的文件
+;; 2.3.2$ 非常大的文件
 ;; (use-package! vlf-setup
 ;;   :defer-incrementally vlf-tune vlf-base vlf-write vlf-search vlf-occur vlf-follow vlf-ediff vlf)
 
@@ -341,66 +273,66 @@
 ;; 2.3.6 Magit
 ;; From :tools magit
 ;; 2.3.6.1 提交信息模板
-(defvar +magit-project-commit-templates-alist nil
-  "Alist of toplevel dirs and template strings/functions.")
-(after! magit
-  (defun +magit-fill-in-commit-template ()
-    "Insert template from `+magit-fill-in-commit-template' if applicable."
-    (when-let ((template (and (save-excursion (goto-char (point-min)) (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
-                              (cdr (assoc (file-name-base (directory-file-name (magit-toplevel)))
-                                          +magit-project-commit-templates-alist)))))
-      (goto-char (point-min))
-      (insert (if (stringp template) template (funcall template)))
-      (goto-char (point-min))
-      (end-of-line)))
-  (add-hook 'git-commit-setup-hook #'+magit-fill-in-commit-template 90))
+;; (defvar +magit-project-commit-templates-alist nil
+;;   "Alist of toplevel dirs and template strings/functions.")
+;; (after! magit
+;;   (defun +magit-fill-in-commit-template ()
+;;     "Insert template from `+magit-fill-in-commit-template' if applicable."
+;;     (when-let ((template (and (save-excursion (goto-char (point-min)) (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
+;;                               (cdr (assoc (file-name-base (directory-file-name (magit-toplevel)))
+;;                                           +magit-project-commit-templates-alist)))))
+;;       (goto-char (point-min))
+;;       (insert (if (stringp template) template (funcall template)))
+;;       (goto-char (point-min))
+;;       (end-of-line)))
+;;   (add-hook 'git-commit-setup-hook #'+magit-fill-in-commit-template 90))
 ;; 为 Org 提交更改的提交信息格式
-(after! magit
-  (defun +org-commit-message-template ()
-    "Create a skeleton for an Org commit message based on the staged diff."
-    (let (change-data last-file file-changes temp-point)
-      (with-temp-buffer
-        (apply #'call-process magit-git-executable
-               nil t nil
-               (append
-                magit-git-global-arguments
-                (list "diff" "--cached")))
-        (goto-char (point-min))
-        (while (re-search-forward "^@@\\|^\\+\\+\\+ b/" nil t)
-          (if (looking-back "^\\+\\+\\+ b/" (line-beginning-position))
-              (progn
-                (push (list last-file file-changes) change-data)
-                (setq last-file (buffer-substring-no-properties (point) (line-end-position))
-                      file-changes nil))
-            (setq temp-point (line-beginning-position))
-            (re-search-forward "^\\+\\|^-" nil t)
-            (end-of-line)
-            (cond
-             ((string-match-p "\\.el$" last-file)
-              (when (re-search-backward "^\\(?:[+-]? *\\|@@[ +-\\d,]+@@ \\)(\\(?:cl-\\)?\\(?:defun\\|defvar\\|defmacro\\|defcustom\\)" temp-point t)
-                (re-search-forward "\\(?:cl-\\)?\\(?:defun\\|defvar\\|defmacro\\|defcustom\\) " nil t)
-                (add-to-list 'file-changes (buffer-substring-no-properties (point) (forward-symbol 1)))))
-             ((string-match-p "\\.org$" last-file)
-              (when (re-search-backward "^[+-]\\*+ \\|^@@[ +-\\d,]+@@ \\*+ " temp-point t)
-                (re-search-forward "@@ \\*+ " nil t)
-                (add-to-list 'file-changes (buffer-substring-no-properties (point) (line-end-position)))))))))
-      (push (list last-file file-changes) change-data)
-      (setq change-data (delete '(nil nil) change-data))
-      (concat
-       (if (= 1 (length change-data))
-           (replace-regexp-in-string "^.*/\\|.[a-z]+$" "" (caar change-data))
-         "?")
-       ": \n\n"
-       (mapconcat
-        (lambda (file-changes)
-          (if (cadr file-changes)
-              (format "* %s (%s): "
-                      (car file-changes)
-                      (mapconcat #'identity (cadr file-changes) ", "))
-            (format "* %s: " (car file-changes))))
-        change-data
-        "\n\n"))))
-  (add-to-list '+magit-project-commit-templates-alist (cons "org-mode" #'+org-commit-message-template)))
+;; (after! magit
+;;   (defun +org-commit-message-template ()
+;;     "Create a skeleton for an Org commit message based on the staged diff."
+;;     (let (change-data last-file file-changes temp-point)
+;;       (with-temp-buffer
+;;         (apply #'call-process magit-git-executable
+;;                nil t nil
+;;                (append
+;;                 magit-git-global-arguments
+;;                 (list "diff" "--cached")))
+;;         (goto-char (point-min))
+;;         (while (re-search-forward "^@@\\|^\\+\\+\\+ b/" nil t)
+;;           (if (looking-back "^\\+\\+\\+ b/" (line-beginning-position))
+;;               (progn
+;;                 (push (list last-file file-changes) change-data)
+;;                 (setq last-file (buffer-substring-no-properties (point) (line-end-position))
+;;                       file-changes nil))
+;;             (setq temp-point (line-beginning-position))
+;;             (re-search-forward "^\\+\\|^-" nil t)
+;;             (end-of-line)
+;;             (cond
+;;              ((string-match-p "\\.el$" last-file)
+;;               (when (re-search-backward "^\\(?:[+-]? *\\|@@[ +-\\d,]+@@ \\)(\\(?:cl-\\)?\\(?:defun\\|defvar\\|defmacro\\|defcustom\\)" temp-point t)
+;;                 (re-search-forward "\\(?:cl-\\)?\\(?:defun\\|defvar\\|defmacro\\|defcustom\\) " nil t)
+;;                 (add-to-list 'file-changes (buffer-substring-no-properties (point) (forward-symbol 1)))))
+;;              ((string-match-p "\\.org$" last-file)
+;;               (when (re-search-backward "^[+-]\\*+ \\|^@@[ +-\\d,]+@@ \\*+ " temp-point t)
+;;                 (re-search-forward "@@ \\*+ " nil t)
+;;                 (add-to-list 'file-changes (buffer-substring-no-properties (point) (line-end-position)))))))))
+;;       (push (list last-file file-changes) change-data)
+;;       (setq change-data (delete '(nil nil) change-data))
+;;       (concat
+;;        (if (= 1 (length change-data))
+;;            (replace-regexp-in-string "^.*/\\|.[a-z]+$" "" (caar change-data))
+;;          "?")
+;;        ": \n\n"
+;;        (mapconcat
+;;         (lambda (file-changes)
+;;           (if (cadr file-changes)
+;;               (format "* %s (%s): "
+;;                       (car file-changes)
+;;                       (mapconcat #'identity (cadr file-changes) ", "))
+;;             (format "* %s: " (car file-changes))))
+;;         change-data
+;;         "\n\n"))))
+;;   (add-to-list '+magit-project-commit-templates-alist (cons "org-mode" #'+org-commit-message-template)))
 
 ;; $2.3.7 Magit delta
 ;; delta 这个插件暂时有问题
@@ -453,7 +385,7 @@
     company-files
     company-yasnippet))
 ;; 2.3.9.2 ESS
-(set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate))
+;; (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate))
 
 ;; 2.3.10 Projectile 禁止一些文件进入项目清单
 ;; From :core packages
@@ -465,7 +397,7 @@
 ;; $2.3.11 Ispell 拼写和字典的设置
 ;; 暂时放下
 
-;; 2.3.12 Tramp 远程访问的设置
+;; 2.3.12$ Tramp 远程访问的设置
 ;; 2.3.12.1 远程访问时对于命令提示符的识别
 ;; (after! tramp
 ;;   (setenv "SHELL" "/bin/bash")
@@ -486,14 +418,14 @@
   :commands ass-mode)
 
 ;; 2.3.14 Screenshot 截图
-(use-package! screenshot
-  :defer t
-  :config (setq screenshot-upload-fn "0x0 %s 2>/dev/null"))
+;; (use-package! screenshot
+;;   :defer t
+;;   :config (setq screenshot-upload-fn "0x0 %s 2>/dev/null"))
 
 ;; 2.3.15 $Etrace
 ;; 没有研究
-(use-package! etrace
-  :after elp)
+;; (use-package! etrace
+;;   :after elp)
 
 ;; 2.3.16 YASnippet
 ;; From :edtior snippets

@@ -19,8 +19,8 @@
 (package! rotate :pin "4e9ac3ff800880bd9b705794ef0f7c99d72900a6")
 
 ;; 2.2.3 Emacs Everwhere
-(package! emacs-everywhere :recipe (:local-repo "lisp/emacs-everywhere"))
-(unpin! emacs-everywhere)
+;; (package! emacs-everywhere :recipe (:local-repo "lisp/emacs-everywhere"))
+;; (unpin! emacs-everywhere)
 
 ;; ====
 ;; ==== 2.3 工具
@@ -38,7 +38,7 @@
   :pin "b1a436922ba06ab9e1a5cc222f1a4f25a7697231")
 
 ;; 2.3.14 Screenshot 截图
-(package! screenshot :recipe (:local-repo "lisp/screenshot"))
+;; (package! screenshot :recipe (:local-repo "lisp/screenshot"))
 
 ;; 2.3.15 Etrace
 (package! etrace :recipe (:host github :repo "aspiers/etrace"))
