@@ -1,8 +1,14 @@
-# key: #+xelatex
+# -*- mode: snippet -*-
 # name: xelatex
+# key: <xelatex
 # --
+#+AUTHOR: Mushi
+#+DATE: <2022-04-03 Mon>
+#+EMAIL: goodhelper005@gmail.com
 #+LATEX_COMPILER: xelatex
-#+LATEX_HEADER: \usepackage{fontspec}
-#+LATEX_HEADER: \setmainfont{LXGW WenKai}
-#+latex_header: \hypersetup{colorlinks=true,linkcolor=blue}
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont{LXGW WenKai}
+#+LATEX_CLASS: elegantpaper
+#+OPTIONS: prop:t
+
 $0

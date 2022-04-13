@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: equation-array
-# key: equ-array
+# key: \equ-a
 # --
 \begin{equation*}
 $1 = \left\{\begin{array}{ll}

@@ -1426,6 +1426,13 @@
 
 
 ;; org-download
+;; (use-package! org-download
+;;   :hook (dired-mode . org-download-enable)
+;;   :config
+;;   (setq org-download-method 'directory)
+;;   (setq org-download-image-dir "./img"))
+(setq org-use-sub-superscripts '{}
+      org-export-with-sub-superscripts '{})
 (require 'org-download)
 
 (setq-default org-download-method 'directory)
@@ -1467,3 +1474,7 @@
   :after org
   :hook
   (org-mode . org-fragtog-mode))
+
+(use-package ox-hugo
+  :ensure t
+  :after ox)
