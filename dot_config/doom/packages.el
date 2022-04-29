@@ -209,3 +209,6 @@
 
 ;; org-reveal
 (package! ox-reveal)
+
+;; sqlformat
+(package! sqlformat)

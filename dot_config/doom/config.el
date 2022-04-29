@@ -186,7 +186,20 @@
       org-src-fontify-natively t
       org-src-tab-acts-natively t)
 
-
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((sh         . t)
+   (js         . t)
+   (emacs-lisp . t)
+   (perl       . t)
+   (scala      . t)
+   (clojure    . t)
+   (python     . t)
+   (ruby       . t)
+   (dot        . t)
+   (css        . t)
+   (plantuml   . t)
+   (C          . t)))
 ;; ========================
 ;; ==== 2 PACKAGES 安装包设置
 ;; ========================
@@ -953,26 +966,6 @@
 ;; ====
 
 ;; Org 导出配置
-(with-eval-after-load 'ox-latex
- ;; http://orgmode.org/worg/org-faq.html#using-xelatex-for-pdf-export
- ;; latexmk runs pdflatex/xelatex (whatever is specified) multiple times
- ;; automatically to resolve the cross-references.
- (setq org-latex-pdf-process '("latexmk -xelatex -quiet -shell-escape -f %f"))
-  ;; 图片默认宽度
- (setq org-image-actual-width '(300))
- (add-to-list 'org-latex-classes
-               '("elegantpaper"
-                 "\\documentclass[lang=en]{elegantpaper}
-                 [NO-DEFAULT-PACKAGES]
-                 [PACKAGES]
-                 [EXTRA]"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (setq org-latex-listings 'minted)
-  (add-to-list 'org-latex-packages-alist '("" "minted")))
 
 ;; 4.3.1 系统配置
 ;; $4.3.1.1 Mime Types
