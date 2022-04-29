@@ -1,0 +1,4 @@
+# key: #+ATTR
+# name: ATTR_LATEX
+# --
+#+ATTR_LATEX: :width 0.7\textwidth $0
