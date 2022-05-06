@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: elegantbook_example
+# key: \example
+# --
+\begin{example}
+  $1
+\end{example}
+$0

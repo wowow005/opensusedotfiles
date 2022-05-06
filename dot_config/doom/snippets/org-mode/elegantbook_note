@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: elegantbook_note
+# key: \note
+# --
+\begin{note}
+$1
+\end{note}
+$0

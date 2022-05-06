@@ -6,11 +6,12 @@
   ;; 图片默认宽度
  ;; (setq org-image-actual-width '(300))
  (add-to-list 'org-latex-classes
-               '("elegantpaper"
-                 "\\documentclass[lang=en]{elegantpaper}
+               '("elegantbook"
+                 "\\documentclass[lang=cn]{elegantbook}
                  [NO-DEFAULT-PACKAGES]
                  [PACKAGES]
                  [EXTRA]"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -144,6 +145,8 @@ This command currently blocks the UI, sorry."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("~/MEGA/AAANOTEBOOKS/Z-200-Learning_Archive/计算技术, 计算机技术/计算机软件/程序语言, 算法语言/C++/C++_Primer_5th/C++_Primer.org"))
  '(sql-connection-alist
    '(("sql_itcast"
       (sql-product 'mysql)

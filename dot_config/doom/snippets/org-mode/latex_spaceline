@@ -1,0 +1,4 @@
+# key: \space
+# name: latex_spaceline
+# --
+\vspace*{1\baselineskip}$0

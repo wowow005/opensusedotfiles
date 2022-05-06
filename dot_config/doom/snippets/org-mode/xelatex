@@ -3,12 +3,17 @@
 # key: <xelatex
 # --
 #+AUTHOR: Mushi
-#+DATE: <2022-04-03 Mon>
+#+DATE: `(format-time-string "[%Y-%m-%d %a %H:%M]")`
 #+EMAIL: goodhelper005@gmail.com
 #+LATEX_COMPILER: xelatex
-#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_CLASS: elegantbook
+# #+LATEX_HEADER: \usepackage{xeCJK}
 #+LATEX_HEADER: \setCJKmainfont{LXGW WenKai}
-#+LATEX_CLASS: elegantpaper
+# #+LATEX_HEADER: fontset = founder
+#+LATEX_HEADER: \documentclass[pad]{elegantbook}
+#+LATEX_HEADER: \documentclass[hang]{elegantbook}
+# #+OPTIONS: prop:t
 #+OPTIONS: prop:t
+#+TITLE: $1
 
 $0
