@@ -243,7 +243,7 @@
    '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "◃\\1"))
    ))
 
-;; 2.2.5 Use editorconfig
+;; 2.2.5 Editorconfig
 (setq lsp-enable-indentation nil)
 (setq editorconfig-mode 1)
 
@@ -261,7 +261,7 @@
             (setq-default abbrev-mode t)
             (setq abbrev-file-name (expand-file-name "abbrev.el" doom-private-dir))))
 
-;; 2.3.2$ 非常大的文件
+;; 2.3.2 $非常大的文件
 ;; (use-package! vlf-setup
 ;;   :defer-incrementally vlf-tune vlf-base vlf-write vlf-search vlf-occur vlf-follow vlf-ediff vlf)
 
@@ -658,48 +658,48 @@
 
 ;; 2.4.9 Marginalia
 ;; From :completion vertico
-(after! marginalia
-  (setq marginalia-censor-variables nil)
-  (defadvice! +marginalia--anotate-local-file-colorful (cand)
-    "Just a more colourful version of `marginalia--anotate-local-file'."
-    :override #'marginalia--annotate-local-file
-    (when-let (attrs (file-attributes (substitute-in-file-name
-                                       (marginalia--full-candidate cand))
-                                      'integer))
-      (marginalia--fields
-       ((marginalia--file-owner attrs)
-        :width 12 :face 'marginalia-file-owner)
-       ((marginalia--file-modes attrs))
-       ((+marginalia-file-size-colorful (file-attribute-size attrs))
-        :width 7)
-       ((+marginalia--time-colorful (file-attribute-modification-time attrs))
-        :width 12))))
-  (defun +marginalia--time-colorful (time)
-    (let* ((seconds (float-time (time-subtract (current-time) time)))
-           (color (doom-blend
-                   (face-attribute 'marginalia-date :foreground nil t)
-                   (face-attribute 'marginalia-documentation :foreground nil t)
-                   (/ 1.0 (log (+ 3 (/ (+ 1 seconds) 345600.0)))))))
-      ;; 1 - log(3 + 1/(days + 1)) % grey
-      (propertize (marginalia--time time) 'face (list :foreground color))))
-  (defun +marginalia-file-size-colorful (size)
-    (let* ((size-index (/ (log10 (+ 1 size)) 7.0))
-           (color (if (< size-index 10000000) ; 10m
-                      (doom-blend 'orange 'green size-index)
-                    (doom-blend 'red 'orange (- size-index 1)))))
-      (propertize (file-size-human-readable size) 'face (list :foreground color)))))
+;; (after! marginalia
+;;   (setq marginalia-censor-variables nil)
+;;   (defadvice! +marginalia--anotate-local-file-colorful (cand)
+;;     "Just a more colourful version of `marginalia--anotate-local-file'."
+;;     :override #'marginalia--annotate-local-file
+;;     (when-let (attrs (file-attributes (substitute-in-file-name
+;;                                        (marginalia--full-candidate cand))
+;;                                       'integer))
+;;       (marginalia--fields
+;;        ((marginalia--file-owner attrs)
+;;         :width 12 :face 'marginalia-file-owner)
+;;        ((marginalia--file-modes attrs))
+;;        ((+marginalia-file-size-colorful (file-attribute-size attrs))
+;;         :width 7)
+;;        ((+marginalia--time-colorful (file-attribute-modification-time attrs))
+;;         :width 12))))
+;;   (defun +marginalia--time-colorful (time)
+;;     (let* ((seconds (float-time (time-subtract (current-time) time)))
+;;            (color (doom-blend
+;;                    (face-attribute 'marginalia-date :foreground nil t)
+;;                    (face-attribute 'marginalia-documentation :foreground nil t)
+;;                    (/ 1.0 (log (+ 3 (/ (+ 1 seconds) 345600.0)))))))
+;;       ;; 1 - log(3 + 1/(days + 1)) % grey
+;;       (propertize (marginalia--time time) 'face (list :foreground color))))
+;;   (defun +marginalia-file-size-colorful (size)
+;;     (let* ((size-index (/ (log10 (+ 1 size)) 7.0))
+;;            (color (if (< size-index 10000000) ; 10m
+;;                       (doom-blend 'orange 'green size-index)
+;;                     (doom-blend 'red 'orange (- size-index 1)))))
+;;       (propertize (file-size-human-readable size) 'face (list :foreground color)))))
 
 ;; 2.4.10 Centaur Tabs
 ;; From :ui tabs
-(after! centaur-tabs
-  (centaur-tabs-mode -1)
-  (setq centaur-tabs-height 36
-        centaur-tabs-set-icons t
-        centaur-tabs-modified-marker "o"
-        centaur-tabs-close-button "×"
-        centaur-tabs-set-bar 'above
-        centaur-tabs-gray-out-icons 'buffer)
-  (centaur-tabs-change-fonts "P22 Underground Book" 160))
+;; (after! centaur-tabs
+;;   (centaur-tabs-mode -1)
+;;   (setq centaur-tabs-height 36
+;;         centaur-tabs-set-icons t
+;;         centaur-tabs-modified-marker "o"
+;;         centaur-tabs-close-button "×"
+;;         centaur-tabs-set-bar 'above
+;;         centaur-tabs-gray-out-icons 'buffer)
+;;   (centaur-tabs-change-fonts "P22 Underground Book" 160))
 ;; (setq x-underline-at-descent-line t)
 
 ;; 2.4.11 All the icons
@@ -1117,291 +1117,11 @@
   ;;                                  (match-string 2))))))))
 
   ;; 4.3.3.2.5 cdlatex
-  ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-  ;; (defadvice! org-edit-latex-emv-after-insert ()
-  ;;   :after #'org-cdlatex-environment-indent
-  ;;   (org-edit-latex-environment))
-  ;; ;; 4.3.3.2.6 Spellcheck
-  ;; (add-hook 'org-mode-hook 'turn-on-flyspell)
-  ;; ;; 4.3.3.2.7 LSP 支持对于 src 代码块
-  ;; (cl-defmacro lsp-org-babel-enable (lang)
-  ;; "Support LANG in org source code block."
-  ;; (setq centaur-lsp 'lsp-mode)
-  ;; (cl-check-type lang stringp)
-  ;; (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
-  ;;         (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
-  ;; `(progn
-  ;; (defun ,intern-pre (info)
-  ;;         (let ((file-name (->> info caddr (alist-get :file))))
-  ;;         (unless file-name
-  ;;         (setq file-name (make-temp-file "babel-lsp-")))
-  ;;         (setq buffer-file-name file-name)
-  ;;         (lsp-deferred)))
-  ;; (put ',intern-pre 'function-documentation
-  ;;         (format "Enable lsp-mode in the buffer of org source block (%s)."
-  ;;                 (upcase ,lang)))
-  ;; (if (fboundp ',edit-pre)
-  ;;         (advice-add ',edit-pre :after ',intern-pre)
-  ;;         (progn
-  ;;         (defun ,edit-pre (info)
-  ;;         (,intern-pre info))
-  ;;         (put ',edit-pre 'function-documentation
-  ;;                 (format "Prepare local buffer environment for org source block (%s)."
-  ;;                         (upcase ,lang))))))))
-  ;; (defvar org-babel-lang-list
-  ;; '("go" "python" "ipython" "bash" "sh"))
-  ;; (dolist (lang org-babel-lang-list)
-  ;; (eval `(lsp-org-babel-enable ,lang)))
-  ;; 4.3.3.2.8 查看可能的输出文件 'localeader v
-  ;; (map! :map org-mode-map
-  ;;         :localleader
-  ;;         :desc "View exported file" "v" #'org-view-output-file)
-  ;; (defun org-view-output-file (&optional org-file-path)
-  ;;   "Visit buffer open on the first output file (if any) found, using `org-view-output-file-extensions'"
-  ;;   (interactive)
-  ;;   (let* ((org-file-path (or org-file-path (buffer-file-name) ""))
-  ;;          (dir (file-name-directory org-file-path))
-  ;;          (basename (file-name-base org-file-path))
-  ;;          (output-file nil))
-  ;;     (dolist (ext org-view-output-file-extensions)
-  ;;       (unless output-file
-  ;;         (when (file-exists-p
-  ;;                (concat dir basename "." ext))
-  ;;           (setq output-file (concat dir basename "." ext)))))
-  ;;     (if output-file
-  ;;         (if (member (file-name-extension output-file) org-view-external-file-extensions)
-  ;;             (browse-url-xdg-open output-file)
-  ;;           (pop-to-buffer (or (find-buffer-visiting output-file)
-  ;;                              (find-file-noselect output-file))))
-  ;;       (message "No exported file found"))))
-  ;; (defvar org-view-output-file-extensions '("pdf" "md" "rst" "txt" "tex" "html")
-  ;;   "Search for output files with these extensions, in order, viewing the first that matches")
-  ;; (defvar org-view-external-file-extensions '("html")
-  ;;   "File formats that should be opened externally.")
-  ;; (after! org-agenda
-  ;;   (org-super-agenda-mode))
-  ;; (setq org-agenda-skip-scheduled-if-done t
-  ;;       org-agenda-skip-deadline-if-done t
-  ;;       org-agenda-include-deadlines t
-  ;;       org-agenda-block-separator nil
-  ;;       org-agenda-tags-column 100 ;; from testing this seems to be a good value
-  ;;       org-agenda-compact-blocks t)
+
 
   ;; 4.3.3.3 Super Agenda
-  ;; (setq org-agenda-custom-commands
-  ;;       '(("o" "Overview"
-  ;;          ((agenda "" ((org-agenda-span 'day)
-  ;;                       (org-super-agenda-groups
-  ;;                        '((:name "Today"
-  ;;                           :time-grid t
-  ;;                           :date today
-  ;;                           :todo "TODAY"
-  ;;                           :scheduled today
-  ;;                           :order 1)))))
-  ;;           (alltodo "" ((org-agenda-overriding-header "")
-  ;;                        (org-super-agenda-groups
-  ;;                         '((:name "Next to do"
-  ;;                            :todo "NEXT"
-  ;;                            :order 1)
-  ;;                           (:name "Important"
-  ;;                            :tag "Important"
-  ;;                            :priority "A"
-  ;;                            :order 6)
-  ;;                           (:name "Due Today"
-  ;;                            :deadline today
-  ;;                            :order 2)
-  ;;                           (:name "Due Soon"
-  ;;                            :deadline future
-  ;;                            :order 8)
-  ;;                           (:name "Overdue"
-  ;;                            :deadline past
-  ;;                            :face error
-  ;;                            :order 7)
-  ;;                           (:name "Assignments"
-  ;;                            :tag "Assignment"
-  ;;                            :order 10)
-  ;;                           (:name "Issues"
-  ;;                            :tag "Issue"
-  ;;                            :order 12)
-  ;;                           (:name "Emacs"
-  ;;                            :tag "Emacs"
-  ;;                            :order 13)
-  ;;                           (:name "Projects"
-  ;;                            :tag "Project"
-  ;;                            :order 14)
-  ;;                           (:name "Research"
-  ;;                            :tag "Research"
-  ;;                            :order 15)
-  ;;                           (:name "To read"
-  ;;                            :tag "Read"
-  ;;                            :order 30)
-  ;;                           (:name "Waiting"
-  ;;                            :todo "WAITING"
-  ;;                            :order 20)
-  ;;                           (:name "University"
-  ;;                            :tag "uni"
-  ;;                            :order 32)
-  ;;                           (:name "Trivial"
-  ;;                            :priority<= "E"
-  ;;                            :tag ("Trivial" "Unimportant")
-  ;;                            :todo ("SOMEDAY" )
-  ;;                            :order 90)
-  ;;                           (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
 
   ;; ;; 4.3.3.4 Capture
-  ;; (after! org-capture
-  ;;     (defun +doct-icon-declaration-to-icon (declaration)
-  ;;   "Convert :icon declaration to icon"
-  ;;   (let ((name (pop declaration))
-  ;;         (set  (intern (concat "all-the-icons-" (plist-get declaration :set))))
-  ;;         (face (intern (concat "all-the-icons-" (plist-get declaration :color))))
-  ;;         (v-adjust (or (plist-get declaration :v-adjust) 0.01)))
-  ;;     (apply set `(,name :face ,face :v-adjust ,v-adjust))))
-
-  ;; (defun +doct-iconify-capture-templates (groups)
-  ;;   "Add declaration's :icon to each template group in GROUPS."
-  ;;   (let ((templates (doct-flatten-lists-in groups)))
-  ;;     (setq doct-templates (mapcar (lambda (template)
-  ;;                                    (when-let* ((props (nthcdr (if (= (length template) 4) 2 5) template))
-  ;;                                                (spec (plist-get (plist-get props :doct) :icon)))
-  ;;                                      (setf (nth 1 template) (concat (+doct-icon-declaration-to-icon spec)
-  ;;                                                                     "\t"
-  ;;                                                                     (nth 1 template))))
-  ;;                                    template)
-  ;;                                  templates))))
-
-  ;; (setq doct-after-conversion-functions '(+doct-iconify-capture-templates))
-  ;; (defvar +org-capture-recipies  "~/MEGA/org/recipies.org")
-  ;; (defun set-org-capture-templates ()
-  ;;   (setq org-capture-templates
-  ;;         (doct `(("Personal todo" :keys "t"
-  ;;                  :icon ("checklist" :set "octicon" :color "green")
-  ;;                  :file +org-capture-todo-file
-  ;;                  :prepend t
-  ;;                  :headline "Inbox"
-  ;;                  :type entry
-  ;;                  :template ("* TODO %?"
-  ;;                             "%i %a"))
-  ;;                 ("Personal note" :keys "n"
-  ;;                  :icon ("sticky-note-o" :set "faicon" :color "green")
-  ;;                  :file +org-capture-todo-file
-  ;;                  :prepend t
-  ;;                  :headline "Inbox"
-  ;;                  :type entry
-  ;;                  :template ("* %?"
-  ;;                             "%i %a"))
-  ;;                 ("Email" :keys "e"
-  ;;                  :icon ("envelope" :set "faicon" :color "blue")
-  ;;                  :file +org-capture-todo-file
-  ;;                  :prepend t
-  ;;                  :headline "Inbox"
-  ;;                  :type entry
-  ;;                  :template ("* TODO %^{type|reply to|contact} %\\3 %? :email:"
-  ;;                             "Send an email %^{urgancy|soon|ASAP|anon|at some point|eventually} to %^{recipiant}"
-  ;;                             "about %^{topic}"
-  ;;                             "%U %i %a"))
-  ;;                 ("Interesting" :keys "i"
-  ;;                  :icon ("eye" :set "faicon" :color "lcyan")
-  ;;                  :file +org-capture-todo-file
-  ;;                  :prepend t
-  ;;                  :headline "Interesting"
-  ;;                  :type entry
-  ;;                  :template ("* [ ] %{desc}%? :%{i-type}:"
-  ;;                             "%i %a")
-  ;;                  :children (("Webpage" :keys "w"
-  ;;                              :icon ("globe" :set "faicon" :color "green")
-  ;;                              :desc "%(org-cliplink-capture) "
-  ;;                              :i-type "read:web")
-  ;;                             ("Article" :keys "a"
-  ;;                              :icon ("file-text" :set "octicon" :color "yellow")
-  ;;                              :desc ""
-  ;;                              :i-type "read:reaserch")
-  ;;                             ("\tRecipie" :keys "r"
-  ;;                              :icon ("spoon" :set "faicon" :color "dorange")
-  ;;                              :file +org-capture-recipies
-  ;;                              :headline "Unsorted"
-  ;;                              :template "%(org-chef-get-recipe-from-url)")
-  ;;                             ("Information" :keys "i"
-  ;;                              :icon ("info-circle" :set "faicon" :color "blue")
-  ;;                              :desc ""
-  ;;                              :i-type "read:info")
-  ;;                             ("Idea" :keys "I"
-  ;;                              :icon ("bubble_chart" :set "material" :color "silver")
-  ;;                              :desc ""
-  ;;                              :i-type "idea")))
-  ;;                 ("Tasks" :keys "k"
-  ;;                  :icon ("inbox" :set "octicon" :color "yellow")
-  ;;                  :file +org-capture-todo-file
-  ;;                  :prepend t
-  ;;                  :headline "Tasks"
-  ;;                  :type entry
-  ;;                  :template ("* TODO %? %^G%{extra}"
-  ;;                             "%i %a")
-  ;;                  :children (("General Task" :keys "k"
-  ;;                              :icon ("inbox" :set "octicon" :color "yellow")
-  ;;                              :extra "")
-  ;;                             ("Task with deadline" :keys "d"
-  ;;                              :icon ("timer" :set "material" :color "orange" :v-adjust -0.1)
-  ;;                              :extra "\nDEADLINE: %^{Deadline:}t")
-  ;;                             ("Scheduled Task" :keys "s"
-  ;;                              :icon ("calendar" :set "octicon" :color "orange")
-  ;;                              :extra "\nSCHEDULED: %^{Start time:}t")))
-  ;;                 ("Project" :keys "p"
-  ;;                  :icon ("repo" :set "octicon" :color "silver")
-  ;;                  :prepend t
-  ;;                  :type entry
-  ;;                  :headline "Inbox"
-  ;;                  :template ("* %{time-or-todo} %?"
-  ;;                             "%i"
-  ;;                             "%a")
-  ;;                  :file ""
-  ;;                  :custom (:time-or-todo "")
-  ;;                  :children (("Project-local todo" :keys "t"
-  ;;                              :icon ("checklist" :set "octicon" :color "green")
-  ;;                              :time-or-todo "TODO"
-  ;;                              :file +org-capture-project-todo-file)
-  ;;                             ("Project-local note" :keys "n"
-  ;;                              :icon ("sticky-note" :set "faicon" :color "yellow")
-  ;;                              :time-or-todo "%U"
-  ;;                              :file +org-capture-project-notes-file)
-  ;;                             ("Project-local changelog" :keys "c"
-  ;;                              :icon ("list" :set "faicon" :color "blue")
-  ;;                              :time-or-todo "%U"
-  ;;                              :heading "Unreleased"
-  ;;                              :file +org-capture-project-changelog-file)))
-  ;;                 ("\tCentralised project templates"
-  ;;                  :keys "o"
-  ;;                  :type entry
-  ;;                  :prepend t
-  ;;                  :template ("* %{time-or-todo} %?"
-  ;;                             "%i"
-  ;;                             "%a")
-  ;;                  :children (("Project todo"
-  ;;                              :keys "t"
-  ;;                              :prepend nil
-  ;;                              :time-or-todo "TODO"
-  ;;                              :heading "Tasks"
-  ;;                              :file +org-capture-central-project-todo-file)
-  ;;                             ("Project note"
-  ;;                              :keys "n"
-  ;;                              :time-or-todo "%U"
-  ;;                              :heading "Notes"
-  ;;                              :file +org-capture-central-project-notes-file)
-  ;;                             ("Project changelog"
-  ;;                              :keys "c"
-  ;;                              :time-or-todo "%U"
-  ;;                              :heading "Unreleased"
-  ;;                              :file +org-capture-central-project-changelog-file)))))))
-
-  ;; (set-org-capture-templates)
-  ;; (unless (display-graphic-p)
-  ;;   (add-hook 'server-after-make-frame-hook
-  ;;             (defun org-capture-reinitialise-hook ()
-  ;;               (when (display-graphic-p)
-  ;;                 (set-org-capture-templates)
-  ;;                 (remove-hook 'server-after-make-frame-hook
-  ;;                              #'org-capture-reinitialise-hook))))))
-
                                         )
 
 ;; 4.3.3.2 额外功能
@@ -1484,12 +1204,13 @@
 							:latex-compiler ("xelatex -interaction nonstopmode -no-pdf -output-directory %o %f")
 							:image-converter ("dvisvgm %f -n -b min -c %S -o %O")))
 (setq org-preview-latex-default-process 'xdvsvgm)
+;; org-fragtog 插件可以让我们自动调用函数生成预览
+(add-hook 'org-mode-hook 'org-fragtog-mode)
+;; (use-package! org-fragtog
+;;   :after org
+;;   :hook
+;;   (org-mode . org-fragtog-mode))
 
-(use-package org-fragtog
-  :after org
-  :hook
-  (org-mode . org-fragtog-mode))
-
-(use-package ox-hugo
+(use-package! ox-hugo
   :ensure t
   :after ox)
