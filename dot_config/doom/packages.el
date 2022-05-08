@@ -197,7 +197,7 @@
 
 ;; 4.3.3 表现
 ;; 4.3.3. Super Agenda
-(package! org-super-agenda :pin "a5557ea4f51571ee9def3cd9a1ab1c38f1a27af7")
+(package! org-super-agenda :pin "3108bc3f725818f0e868520d2c243abe9acbef4e")
 
 ;; 4.3.3.4 Capture
 (package! doct

@@ -112,6 +112,9 @@
 ;; 缩进设置
 (setq-default  tab-width 2) ;; 表示一个 tab 4个字符宽
 (setq-default indent-tabs-mode nil) ;; nil 表示将 tab 替换成空格
+;; beacon 包, 可以在跳转行时闪烁行
+(beacon-mode 1)
+
 
 ;; 1.3.3 一些有用的宏
 
@@ -120,6 +123,7 @@
 ;; (defun doom-shut-up-a (orig-fn &rest args)
 ;;   (quiet! (apply orig-fn args)))
 ;; (advice-add 'org-babel-execute-src-block :around #'doom-shut-up-a)
+
 
 ;; 1.3.5 Elisp REPL
 
@@ -254,6 +258,9 @@
 ;; 2.3.0 Vterm 让 Emacs 中的终端更好用
 (setq-default explicit-shell-file-name "/bin/zsh")
 (setq-default shell-file-name "/bin/zsh")
+(use-package! vterm
+  :config
+  (setq vterm-shell "zsh"))
 
 ;; 2.3.1 Abbrev
 (add-hook 'doom-first-buffer-hook
@@ -965,7 +972,6 @@
 ;; ==== 4.3 Org
 ;; ====
 
-;; Org 导出配置
 
 ;; 4.3.1 系统配置
 ;; $4.3.1.1 Mime Types
@@ -1125,6 +1131,7 @@
                                         )
 
 ;; 4.3.3.2 额外功能
+
 ;; 4.3.3.2.1 创建 Org buffer 变的更简单
 (evil-define-command evil-buffer-org-new (count file)
   "Creates a new ORG buffer replacing the current window, optionally
@@ -1141,6 +1148,7 @@
       (:prefix "b"
        :desc "New empty ORG buffer" "o" #'evil-buffer-org-new))
 ;; 4.3.3.2.4 Citation
+
 ;; 4.3.3.2.5 cdlatex
 
 ;; 4.3.3.3 Super Agenda
@@ -1151,16 +1159,7 @@
 (use-package! doct
   :commands doct)
 
-;; Language Setting
-;; Python
-(after! lsp-python-ms
-  (set-lsp-priority! 'mspyls 1))
-
-(beacon-mode 1)
-
-
-
-;; org-download
+;; 4.3.3.5 Org-download
 ;; (use-package! org-download
 ;;   :hook (dired-mode . org-download-enable)
 ;;   :config
@@ -1169,23 +1168,21 @@
 (setq org-use-sub-superscripts '{}
       org-export-with-sub-superscripts '{})
 (require 'org-download)
-
 (setq-default org-download-method 'directory)
 (setq-default org-download-image-dir "./img")
-
 ;; Drag-and-drop to `dired`
-(add-hook 'dired-mode-hook 'org-download-enable)
+(add-hook! 'dired-mode-hook 'org-download-enable)
 
 ;; org-src
-(setq org-src-preserve-indentation t)
+;; (setq org-src-preserve-indentation t)
 
-(define-key global-map "\C-cc" 'org-capture)
+;; (define-key global-map "\C-cc" 'org-capture)
 
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/MEGA/org/task.org" "Tasks")
-         "* TODO %?\n %i\n %a")
-        ("j" "Journal" entry (file+datetree "~/MEGA/org/journal.org")
-         "* %?\nEntered on %U\n %i\n %a")))
+;; (setq org-capture-templates
+;;       '(("t" "Todo" entry (file+headline "~/MEGA/org/task.org" "Tasks")
+;;          "* TODO %?\n %i\n %a")
+;;         ("j" "Journal" entry (file+datetree "~/MEGA/org/journal.org")
+;;          "* %?\nEntered on %U\n %i\n %a")))
 
 ;; ;; org-elp
 ;; (require 'org-elp)
@@ -1193,24 +1190,57 @@
 ;; (setq org-elp-buffer-name "*Equation Live*")
 ;; (setq org-elp-idle-time 0.5)
 
-;; org preview 设置
-(add-to-list 'org-preview-latex-process-alist '(xdvsvgm :progams
-							("xelatex" "dvisvgm")
-							:discription "xdv > svg"
-							:message "you need install the programs: xelatex and dvisvgm."
-							:image-input-type "xdv"
-							:image-output-type "svg"
-							:image-size-adjust (1.7 . 1.5)
-							:latex-compiler ("xelatex -interaction nonstopmode -no-pdf -output-directory %o %f")
-							:image-converter ("dvisvgm %f -n -b min -c %S -o %O")))
-(setq org-preview-latex-default-process 'xdvsvgm)
 ;; org-fragtog 插件可以让我们自动调用函数生成预览
-(add-hook 'org-mode-hook 'org-fragtog-mode)
-;; (use-package! org-fragtog
-;;   :after org
-;;   :hook
-;;   (org-mode . org-fragtog-mode))
+(add-hook! 'org-mode-hook 'org-fragtog-mode)
+(use-package! org-fragtog
+  :after org
+  :hook
+  (org-mode . org-fragtog-mode))
 
 (use-package! ox-hugo
-  :ensure t
   :after ox)
+
+;; ====
+;; ==== 4.4 LaTex
+;; ====
+
+;; Latex 导出模板设置
+(with-eval-after-load 'ox-latex
+ ;; http://orgmode.org/worg/org-faq.html#using-xelatex-for-pdf-export
+ ;; latexmk runs pdflatex/xelatex (whatever is specified) multiple times
+ ;; automatically to resolve the cross-references.
+(setq org-latex-pdf-process '("latexmk -xelatex -quiet -shell-escape -f %f"))
+ ;; 图片默认宽度
+ ;; (setq org-image-actual-width '(300))
+ (add-to-list 'org-latex-classes
+               '("elegantbook"
+                 "\\documentclass[lang=cn]{elegantbook}
+                 [NO-DEFAULT-PACKAGES]
+                 [PACKAGES]
+                 [EXTRA]"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+(setq org-latex-listings 'minted)
+(add-to-list 'org-latex-packages-alist '("" "minted")))
+
+;; Org 导出配置
+;; org preview 设置
+;; (add-to-list 'org-preview-latex-process-alist '(xdvsvgm :progams ("xelatex" "dvisvgm")
+;;                                                         :discription "xdv > svg"
+;;                                                         :message "you need install the programs :xelatex and dvisvgm."
+;;                                                         :image-input-type "svg"
+;;                                                         :image-size-adjust (1.5 . 1.5)
+;;                                                         :latex-compiler ("xelatex -interaction nonstopmode -no-pdf -output-directory %o %f")
+;;                                                         :image-converter ("dvisvgm %f -n -b min -c %S -o %O")))
+;; (setq org-preview-latex-default-process 'xdvsvgm)
+
+
+;; ====
+;; ==== 4.5 Python
+;; ====
+(after! lsp-python-ms
+  (set-lsp-priority! 'mspyls 1))
