@@ -32,8 +32,8 @@
 (global-subword-mode 1)
 
 ;; 1.2.2 默认打开的界面尺寸
-(add-to-list 'default-frame-alist '(height . 50))
-(add-to-list 'default-frame-alist '(width . 80))
+(add-to-list 'default-frame-alist '(height . 40))
+(add-to-list 'default-frame-alist '(width . 90))
 
 ;; 1.2.3 使用自定义文件.custom.el
 (setq-default custom-file (expand-file-name ".custom.el" doom-private-dir))
@@ -70,12 +70,20 @@
 
 ;; 1.3.2 视觉设置
 ;; 1.3.2.1 字体设置
-(setq doom-font (font-spec :family "JetBrains Mono" :size 16)
-      doom-big-font (font-spec :family "JetBrains Mono" :size 26)
+(setq doom-font (font-spec :family "Sarasa Mono SC Nerd" :size 16)
+      doom-big-font (font-spec :family "Sarasa Mono SC Nerd" :size 26)
       doom-variable-pitch-font (font-spec :family "Overpass" :size 16)
       doom-unicode-font (font-spec :family "JuliaMono")
       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
+
 ;; 中文额外设置
+;; Set font for chinese characters
+;; Font should be twice the width of asci chars so that org tables align
+;; This will break if run in terminal mode, so use conditional to only run for GUI.
+;; (if (display-graphic-p)
+;;     (dolist (charset '(kana han cjk-misc bopomofo))
+;;       (set-fontset-font (frame-parameter nil 'font)
+;;                         charset (font-spec :family "Hiragino Sans GB" :size 16))))
 (let ((font-chinese "PingFang SC"))
   (add-hook! emacs-startup :append
    (set-fontset-font t 'cjk-misc font-chinese nil 'prepend)
@@ -190,20 +198,24 @@
       org-src-fontify-natively t
       org-src-tab-acts-natively t)
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((sh         . t)
-   (js         . t)
-   (emacs-lisp . t)
-   (perl       . t)
-   (scala      . t)
-   (clojure    . t)
-   (python     . t)
-   (ruby       . t)
-   (dot        . t)
-   (css        . t)
-   (plantuml   . t)
-   (C          . t)))
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((sh         . t)
+;;    (js         . t)
+;;    (emacs-lisp . t)
+;;    (perl       . t)
+;;    (scala      . t)
+;;    (clojure    . t)
+;;    (python     . t)
+;;    (ruby       . t)
+;;    (dot        . t)
+;;    (css        . t)
+;;    (plantuml   . t)
+;;    (C          . t)
+;;    (cpp        . t)
+;;    (sql        . t)))
+
+
 ;; ========================
 ;; ==== 2 PACKAGES 安装包设置
 ;; ========================
@@ -449,41 +461,49 @@
 
 ;; 2.3.16 YASnippet
 ;; From :edtior snippets
-(setq yas-triggers-in-field t)
+(use-package! yasnippet
+  :init
+  (setq yas-triggers-in-field t)
+  (setq yas-snippet-dirs '("~/.config/doom/snippets"))
+  )
+;; (setq yas-triggers-in-field t)
 ;; (add-to-list 'load-path
 ;;              "~/path-to-yasnippet")
 ;; (setq yas-snippet-dirs '("~/.config/doom/snippets"))
 ;; (require 'yasnippet)
-; (yas-global-mode 1)
+;; (yas-global-mode 1)
+(use-package! doom-snippets
+  :load-path "~/.config/doom/snippets"
+  :after yasnippet)
 
 ;; 2.3.17 String inflection 大小写转换工具
-(use-package! string-inflection
-  :commands (string-inflection-all-cycle
-             string-inflection-toggle
-             string-inflection-camelcase
-             string-inflection-lower-camelcase
-             string-inflection-kebab-case
-             string-inflection-underscore
-             string-inflection-capital-underscore
-             string-inflection-upcase)
-  :init
-  (map! :leader :prefix ("c~" . "naming convention")
-        :desc "cycle" "~" #'string-inflection-all-cycle
-        :desc "toggle" "t" #'string-inflection-toggle
-        :desc "CamelCase" "c" #'string-inflection-camelcase
-        :desc "downCase" "d" #'string-inflection-lower-camelcase
-        :desc "kebab-case" "k" #'string-inflection-kebab-case
-        :desc "under_score" "_" #'string-inflection-underscore
-        :desc "Upper_Score" "u" #'string-inflection-capital-underscore
-        :desc "UP_CASE" "U" #'string-inflection-upcase)
-  (after! evil
-    (evil-define-operator evil-operator-string-inflection (beg end _type)
-      "Define a new evil operator that cycles symbol casing."
-      :move-point nil
-      (interactive "<R>")
-      (string-inflection-all-cycle)
-      (setq evil-repeat-info '([?g ?~])))
-    (define-key evil-normal-state-map (kbd "g~") 'evil-operator-string-inflection)))
+;; (use-package! string-inflection
+;;   :commands (string-inflection-all-cycle
+;;              string-inflection-toggle
+;;              string-inflection-camelcase
+;;              string-inflection-lower-camelcase
+;;              string-inflection-kebab-case
+;;              string-inflection-underscore
+;;              string-inflection-capital-underscore
+;;              string-inflection-upcase)
+;;   :init
+;;   (map! :leader :prefix ("c~" . "naming convention")
+;;         :desc "cycle" "~" #'string-inflection-all-cycle
+;;         :desc "toggle" "t" #'string-inflection-toggle
+;;         :desc "CamelCase" "c" #'string-inflection-camelcase
+;;         :desc "downCase" "d" #'string-inflection-lower-camelcase
+;;         :desc "kebab-case" "k" #'string-inflection-kebab-case
+;;         :desc "under_score" "_" #'string-inflection-underscore
+;;         :desc "Upper_Score" "u" #'string-inflection-capital-underscore
+;;         :desc "UP_CASE" "U" #'string-inflection-upcase)
+;;   (after! evil
+;;     (evil-define-operator evil-operator-string-inflection (beg end _type)
+;;       "Define a new evil operator that cycles symbol casing."
+;;       :move-point nil
+;;       (interactive "<R>")
+;;       (string-inflection-all-cycle)
+;;       (setq evil-repeat-info '([?g ?~])))
+;;     (define-key evil-normal-state-map (kbd "g~") 'evil-operator-string-inflection)))
 
 ;; 2.3.18 Smart parentheses
 ;; (sp-local-pair
@@ -572,44 +592,44 @@
     (setq-local emojify-emoji-styles (default-value 'emojify-emoji-styles))
     (advice-remove 'emojify--propertize-text-for-emoji #'emojify--replace-text-with-emoji)))
 ;; 在电子邮件和 IRC 中也添加这种次要模式
-(add-hook! '(mu4e-compose-mode org-msg-edit-mode circe-channel-mode) (emoticon-to-emoji 1))
+;; (add-hook! '(mu4e-compose-mode org-msg-edit-mode circe-channel-mode) (emoticon-to-emoji 1))
 
 ;; 2.4.5 Doom 的底栏
 ;; From :ui modeline
 ;; 对于 PDF 模式底栏的一些调整
-(after! doom-modeline
-  (doom-modeline-def-segment buffer-name
-    "Display the current buffer's name, without any other information."
-    (concat
-     (doom-modeline-spc)
-     (doom-modeline--buffer-name)))
-  (doom-modeline-def-segment pdf-icon
-    "PDF icon from all-the-icons."
-    (concat
-     (doom-modeline-spc)
-     (doom-modeline-icon 'octicon "file-pdf" nil nil
-                         :face (if (doom-modeline--active)
-                                   'all-the-icons-red
-                                 'mode-line-inactive)
-                         :v-adjust 0.02)))
-  (defun doom-modeline-update-pdf-pages ()
-    "Update PDF pages."
-    (setq doom-modeline--pdf-pages
-          (let ((current-page-str (number-to-string (eval `(pdf-view-current-page))))
-                (total-page-str (number-to-string (pdf-cache-number-of-pages))))
-            (concat
-             (propertize
-              (concat (make-string (- (length total-page-str) (length current-page-str)) ? )
-                      " P" current-page-str)
-              'face 'mode-line)
-             (propertize (concat "/" total-page-str) 'face 'doom-modeline-buffer-minor-mode)))))
-  (doom-modeline-def-segment pdf-pages
-    "Display PDF pages."
-    (if (doom-modeline--active) doom-modeline--pdf-pages
-      (propertize doom-modeline--pdf-pages 'face 'mode-line-inactive)))
-  (doom-modeline-def-modeline 'pdf
-    '(bar window-number pdf-pages pdf-icon buffer-name)
-    '(misc-info matches major-mode process vcs)))
+;; (after! doom-modeline
+;;   (doom-modeline-def-segment buffer-name
+;;     "Display the current buffer's name, without any other information."
+;;     (concat
+;;      (doom-modeline-spc)
+;;      (doom-modeline--buffer-name)))
+;;   (doom-modeline-def-segment pdf-icon
+;;     "PDF icon from all-the-icons."
+;;     (concat
+;;      (doom-modeline-spc)
+;;      (doom-modeline-icon 'octicon "file-pdf" nil nil
+;;                          :face (if (doom-modeline--active)
+;;                                    'all-the-icons-red
+;;                                  'mode-line-inactive)
+;;                          :v-adjust 0.02)))
+;;   (defun doom-modeline-update-pdf-pages ()
+;;     "Update PDF pages."
+;;     (setq doom-modeline--pdf-pages
+;;           (let ((current-page-str (number-to-string (eval `(pdf-view-current-page))))
+;;                 (total-page-str (number-to-string (pdf-cache-number-of-pages))))
+;;             (concat
+;;              (propertize
+;;               (concat (make-string (- (length total-page-str) (length current-page-str)) ? )
+;;                       " P" current-page-str)
+;;               'face 'mode-line)
+;;              (propertize (concat "/" total-page-str) 'face 'doom-modeline-buffer-minor-mode)))))
+;;   (doom-modeline-def-segment pdf-pages
+;;     "Display PDF pages."
+;;     (if (doom-modeline--active) doom-modeline--pdf-pages
+;;       (propertize doom-modeline--pdf-pages 'face 'mode-line-inactive)))
+;;   (doom-modeline-def-modeline 'pdf
+;;     '(bar window-number pdf-pages pdf-icon buffer-name)
+;;     '(misc-info matches major-mode process vcs)))
 
 ;; 2.4.6 Keycast 按键显示工具
 ;; (use-package! keycast
@@ -698,16 +718,40 @@
 
 ;; 2.4.10 Centaur Tabs
 ;; From :ui tabs
-;; (after! centaur-tabs
-;;   (centaur-tabs-mode -1)
-;;   (setq centaur-tabs-height 36
-;;         centaur-tabs-set-icons t
-;;         centaur-tabs-modified-marker "o"
-;;         centaur-tabs-close-button "×"
-;;         centaur-tabs-set-bar 'above
-;;         centaur-tabs-gray-out-icons 'buffer)
-;;   (centaur-tabs-change-fonts "P22 Underground Book" 160))
-;; (setq x-underline-at-descent-line t)
+(use-package! centaur-tabs
+  :config
+  (setq centaur-tabs-style "bar"
+        centaur-tabs-height 22
+        centaur-tabs-set-icons t
+        centaur-tabs-set-modified-marker t
+        centaur-tabs-show-navigation-buttons t
+        centaur-tabs-set-bar 'under
+        x-underline-at-descent-line t)
+  (centaur-tabs-headline-match)
+  (centaur-tabs-mode t)
+  (setq uniquify-separator "/")
+  (setq uniquify-buffer-name-style 'forward)
+  (map! :leader
+        :desc "Centaur-tabs-forward" "[" #'centaur-tabs-forward)
+  (map! :leader
+        :desc "Centaur-tabs-backward" "]" #'centaur-tabs-backward)
+  :hook
+  (dashboard-mode . centaur-tabs-local-mode)
+  (term-mode . centaur-tabs-local-mode)
+  (calendar-mode . centaur-tabs-local-mode)
+  (org-agenda-mode . centaur-tabs-local-mode)
+  (helpful-mode . centaur-tabs-local-mode)
+  :bind
+  ("C-c t s" . centaur-tabs-counsel-switch-group)
+  ("C-c t p" . centaur-tabs-group-by-projectile-project)
+  ("C-c t g" . centaur-tabs-group-buffer-groups)
+  ;; :map evil-normal-state-map
+  ;; ("SPC-[" . centaur-tabs-backward)
+  ;; ("SPC-]" . centaur-tabs-forward)
+  ;; ("g t" . centaur-tabs-forward)
+  ;; ("g T" . centaur-tabs-backward)
+  )
+
 
 ;; 2.4.11 All the icons
 ;; From :core packages
@@ -794,34 +838,55 @@
 ;; 2.5.3 Wttrin
 
 ;; 2.5.4 Spray 闪现文字工具
-(use-package! spray
-  :commands spray-mode
-  :config
-  (setq spray-wpm 600
-        spray-height 800)
-  (defun spray-mode-hide-cursor ()
-    "Hide or unhide the cursor as is appropriate."
-    (if spray-mode
-        (setq-local spray--last-evil-cursor-state evil-normal-state-cursor
-                    evil-normal-state-cursor '(nil))
-      (setq-local evil-normal-state-cursor spray--last-evil-cursor-state)))
-  (add-hook 'spray-mode-hook #'spray-mode-hide-cursor)
-  (map! :map spray-mode-map
-        "<return>" #'spray-start/stop
-        "f" #'spray-faster
-        "s" #'spray-slower
-        "t" #'spray-time
-        "<right>" #'spray-forward-word
-        "h" #'spray-forward-word
-        "<left>" #'spray-backward-word
-        "l" #'spray-backward-word
-        "q" #'spray-quit))
+;; (use-package! spray
+;;   :commands spray-mode
+;;   :config
+;;   (setq spray-wpm 600
+;;         spray-height 800)
+;;   (defun spray-mode-hide-cursor ()
+;;     "Hide or unhide the cursor as is appropriate."
+;;     (if spray-mode
+;;         (setq-local spray--last-evil-cursor-state evil-normal-state-cursor
+;;                     evil-normal-state-cursor '(nil))
+;;       (setq-local evil-normal-state-cursor spray--last-evil-cursor-state)))
+;;   (add-hook 'spray-mode-hook #'spray-mode-hide-cursor)
+;;   (map! :map spray-mode-map
+;;         "<return>" #'spray-start/stop
+;;         "f" #'spray-faster
+;;         "s" #'spray-slower
+;;         "t" #'spray-time
+;;         "<right>" #'spray-forward-word
+;;         "h" #'spray-forward-word
+;;         "<left>" #'spray-backward-word
+;;         "l" #'spray-backward-word
+;;         "q" #'spray-quit))
 
 ;; 2.5.5 Elcord 在 discord 中展示使用 emacs 状态
 (use-package! elcord
   :commands elcord-mode
   :config
   (setq elcord-use-major-mode-as-main-icon t))
+
+;; 2.5.6 Emms Emacs 多媒体系统
+;; (use-package! emms
+;;   :defer t
+;;   :commands (emms)
+;;   :custom
+;;   (emms-source-file-default-directory "~/MEGA/Music")
+;;   (emms-lyrics-dir "~/MEGA/Music/lyrics")
+;;   (emms-lyrics-display-on-minibuffer t)
+;;   (emms-lyrics-display-on-modeline nil)
+;;   (emms-player-list '(emms-player-mpv))
+;;   ;; covers
+;;   (emms-browser-covers #'emms-browser-cache-thumbnail-async)
+;;   (emms-browser-thumbnail-small-size 64)
+;;   (emms-browser-thumbnail-medium-size 128)
+;;   :config
+;;   (require 'emms-setup)
+;;   (emms-all)
+;;   (emms-history-load)
+;;   (emms-mode-line-disable)
+;;   )
 
 ;; ====
 ;; ==== 2.6 File types 文件类型
@@ -1051,6 +1116,52 @@
 ;;   (add-to-list 'orgdiff-latexdiff-postprocess-hooks #'+orgdiff-nicer-change-colours))
 ;; 4.3.2.3.9 $Org music
 
+;; 4.2.3.10 org-fragtog 插件可以让我们自动调用函数生成预览
+(add-hook! 'org-mode-hook 'org-fragtog-mode)
+(use-package! org-fragtog
+  :after org
+  :hook
+  (org-mode . org-fragtog-mode))
+
+;; 4.2.3.11 Super Agenda
+;; (use-package! org-super-agenda
+;;   :commands org-super-agenda-mode)
+
+;; 4.2.3.12 Capture
+;; (use-package! doct
+;;   :commands doct)
+
+;; 4.2.3.13 Org-download
+;; (use-package! org-download
+;;   :hook (dired-mode . org-download-enable)
+;;   :config
+;;   (setq org-download-method 'directory)
+;;   (setq org-download-image-dir "./img"))
+(setq org-use-sub-superscripts '{}
+      org-export-with-sub-superscripts '{})
+(require 'org-download)
+(setq-default org-download-method 'directory)
+(setq-default org-download-image-dir "./img")
+;; Drag-and-drop to `dired`
+(add-hook! 'dired-mode-hook 'org-download-enable)
+
+;; org-hugo
+(use-package! ox-hugo
+  :after ox)
+
+;; org-roam
+(use-package! org-roam
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/MEGA/RoamNotes")
+  :bind
+  (("C-c n l" . org-roam-buffer-toggle)
+   ("C-c n f" . org-roam-node-find)
+   ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-setup))
+
 ;; 4.3.3 行为
 
 ;; 4.3.3.1 调整默认值
@@ -1151,27 +1262,6 @@
 
 ;; 4.3.3.2.5 cdlatex
 
-;; 4.3.3.3 Super Agenda
-(use-package! org-super-agenda
-  :commands org-super-agenda-mode)
-
-;; 4.3.3.4 Capture
-(use-package! doct
-  :commands doct)
-
-;; 4.3.3.5 Org-download
-;; (use-package! org-download
-;;   :hook (dired-mode . org-download-enable)
-;;   :config
-;;   (setq org-download-method 'directory)
-;;   (setq org-download-image-dir "./img"))
-(setq org-use-sub-superscripts '{}
-      org-export-with-sub-superscripts '{})
-(require 'org-download)
-(setq-default org-download-method 'directory)
-(setq-default org-download-image-dir "./img")
-;; Drag-and-drop to `dired`
-(add-hook! 'dired-mode-hook 'org-download-enable)
 
 ;; org-src
 ;; (setq org-src-preserve-indentation t)
@@ -1190,15 +1280,6 @@
 ;; (setq org-elp-buffer-name "*Equation Live*")
 ;; (setq org-elp-idle-time 0.5)
 
-;; org-fragtog 插件可以让我们自动调用函数生成预览
-(add-hook! 'org-mode-hook 'org-fragtog-mode)
-(use-package! org-fragtog
-  :after org
-  :hook
-  (org-mode . org-fragtog-mode))
-
-(use-package! ox-hugo
-  :after ox)
 
 ;; ====
 ;; ==== 4.4 LaTex
@@ -1224,6 +1305,17 @@
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+(add-to-list 'org-latex-classes
+        '("elegantpaper"
+                "\\documentclass[lang=en]{elegantpaper}
+                [NO-DEFAULT-PACKAGES]
+                [PACKAGES]
+                [EXTRA]"
+                ("\\section{%s}" . "\\section*{%s}")
+                ("\\subsection{%s}" . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 (setq org-latex-listings 'minted)
 (add-to-list 'org-latex-packages-alist '("" "minted")))
 
