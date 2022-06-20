@@ -1137,13 +1137,13 @@
 ;;   :config
 ;;   (setq org-download-method 'directory)
 ;;   (setq org-download-image-dir "./img"))
-(setq org-use-sub-superscripts '{}
-      org-export-with-sub-superscripts '{})
-(require 'org-download)
-(setq-default org-download-method 'directory)
-(setq-default org-download-image-dir "./img")
-;; Drag-and-drop to `dired`
-(add-hook! 'dired-mode-hook 'org-download-enable)
+;; (setq org-use-sub-superscripts '{}
+;;       org-export-with-sub-superscripts '{})
+;; (require 'org-download)
+;; (setq-default org-download-method 'directory)
+;; (setq-default org-download-image-dir "./img")
+;; ;; Drag-and-drop to `dired`
+;; (add-hook! 'dired-mode-hook 'org-download-enable)
 
 ;; org-hugo
 (use-package! ox-hugo
@@ -1153,14 +1153,25 @@
 (use-package! org-roam
   :init
   (setq org-roam-v2-ack t)
+  (setq org-roam-dailies-directory "journal/")
   :custom
   (org-roam-directory "~/MEGA/RoamNotes")
+  (org-roam-completion-everywhere t)
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%I:%M %p>: %?"
+      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   :bind
   (("C-c n l" . org-roam-buffer-toggle)
    ("C-c n f" . org-roam-node-find)
-   ("C-c n i" . org-roam-node-insert))
+   ("C-c n i" . org-roam-node-insert)
+  :map org-roam-dailies-map
+  ("Y" . org-roam-dailies-capture-yesterday)
+  ("T" . org-roam-dailies-capture-tomorrow))
+  :bind-keymap
+  ("C-c n d" . org-roam-dailies-map)
   :config
-  (org-roam-setup))
+  (require 'org-roam-dailies)
+  (org-roam-db-autosync-mode))
 
 ;; 4.3.3 行为
 
@@ -1307,7 +1318,7 @@
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 (add-to-list 'org-latex-classes
         '("elegantpaper"
-                "\\documentclass[lang=en]{elegantpaper}
+                "\\documentclass[lang=cn]{elegantpaper}
                 [NO-DEFAULT-PACKAGES]
                 [PACKAGES]
                 [EXTRA]"
