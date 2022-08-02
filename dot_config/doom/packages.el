@@ -179,14 +179,14 @@
 ;; 4.3.2.3.2 Julia 支持
 ;; (package! ob-julia :recipe (:local-repo "lisp/ob-julia" :files ("*.el" "julia")))
 ;; 4.3.2.3.3 HTTP 请求
-(package! ob-http :pin "b1428ea2a63bcb510e7382a1bf5fe82b19c104a7")
+;; (package! ob-http :pin "b1428ea2a63bcb510e7382a1bf5fe82b19c104a7")
 ;; 4.3.2.3.4 Transclusion
-(package! org-transclusion :recipe (:host github :repo "nobiot/org-transclusion")
-  :pin "8cbbade1e3237200c2140741f39ff60176e703e7")
+;; (package! org-transclusion :recipe (:host github :repo "nobiot/org-transclusion")
+;;   :pin "8cbbade1e3237200c2140741f39ff60176e703e7")
 ;; 4.3.2.3.5 Heading graph
-(package! org-graph-view :recipe (:host github :repo "alphapapa/org-graph-view") :pin "13314338d70d2c19511efccc491bed3ca0758170")
+;; (package! org-graph-view :recipe (:host github :repo "alphapapa/org-graph-view") :pin "13314338d70d2c19511efccc491bed3ca0758170")
 ;; 4.3.2.3.6 Cooking recipes
-(package! org-chef :pin "a97232b4706869ecae16a1352487a99bc3cf97af")
+;; (package! org-chef :pin "a97232b4706869ecae16a1352487a99bc3cf97af")
 ;; 4.3.2.3.7 Improting with Pandoc
 (package! org-pandoc-import
   :recipe (:host github
@@ -197,7 +197,7 @@
 
 ;; 4.3.3 表现
 ;; 4.3.3. Super Agenda
-(package! org-super-agenda :pin "3108bc3f725818f0e868520d2c243abe9acbef4e")
+;; (package! org-super-agenda :pin "3108bc3f725818f0e868520d2c243abe9acbef4e")
 
 ;; 4.3.3.4 Capture
 (package! doct
@@ -208,7 +208,7 @@
 (package! org-fragtog)
 
 ;; org-reveal
-(package! ox-reveal)
+;; (package! ox-reveal)
 
 ;; sqlformat
-(package! sqlformat)
+;; (package! sqlformat)
