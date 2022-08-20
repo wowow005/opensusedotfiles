@@ -1,18 +1,4 @@
 # Mushi's config for the zsh
-# case "$(uname -s)" in
-#     Darwin)
-#         eval "$(/opt/homebrew/bin/brew shellenv)"
-#         export PATH="/opt/homebrew/bin:$PATH"
-#         export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
-#         eval "$(/usr/libexec/path_helper)"
-#         ;;
-#     Linux)
-#         ;;
-#     CYGWIN* | MINGW32* | MSYS* | MINGW*)
-#         ;;
-#     *)
-#         ;;
-# esac
 
 # Some function
 function zsh_add_file() {
@@ -122,5 +108,8 @@ alias \
 
 # # basher
 # export PATH="$HOME/.basher/bin:$PATH"
+
+# # Doom nvim
+alias nvim="CC=/opt/homebrew/Cellar/gcc/11.3.0_2/bin/gcc-11 nvim"
 
 # eval "$(basher init - zsh)"

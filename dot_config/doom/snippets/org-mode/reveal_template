@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: reveal_template
-# key: :reveal
-# --
-:REVEAL_PROPERTIES:
-#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
-#+REVEAL_REVEAL_JS_VERSION: 4
-:END:
-$0

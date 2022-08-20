@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: elegantbook_theorem*
-# key: \theorem*
-# --
-\begin{theorem} \label{thm:theorem-withou-name}
-  $1
-\end{theorem}
-$0

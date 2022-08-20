@@ -1,6 +1,0 @@
-# key: <tt
-# name: titler
-# --
-#+TITLE: ${1:title}
-#+AUTHOR: ${2:author}
-$0

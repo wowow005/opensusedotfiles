@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: elegant_definition
-# key: \definition
-# --
-\begin{definition}[$1]
-$0
-\end{definition}
