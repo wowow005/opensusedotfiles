@@ -4,7 +4,7 @@
 unsetopt PROMPT_SP
 
 # Default programs:
-export EDITOR="emacs"
+export EDITOR="vim"
 export TERMINAL="kitty"
 export BROWSER="chrome"
 
