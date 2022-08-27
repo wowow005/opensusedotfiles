@@ -1,2 +1,5 @@
 #!/bin/zsh
+# Flex on the ubuntu users
+neofetch
+
 eval "$(gh completion -s zsh)"
