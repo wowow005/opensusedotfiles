@@ -55,6 +55,9 @@ command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 " Open Line number
 set number
 
+" Clipboard
+set clipboard=unnamed
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
