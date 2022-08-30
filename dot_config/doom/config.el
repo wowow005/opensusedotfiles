@@ -109,3 +109,11 @@
 
 ;; Pyim
 ;; (use-package)
+
+;; Org-download
+(use-package! org-download
+  :init
+  (setq-default org-download-method 'directory)
+  (setq-default org-download-image-dir "./img")
+  (setq-default org-download-heading-lvl 'nil)
+  )
