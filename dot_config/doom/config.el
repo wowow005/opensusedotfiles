@@ -117,3 +117,9 @@
   (setq-default org-download-image-dir "./img")
   (setq-default org-download-heading-lvl 'nil)
   )
+
+;; Editorconfig
+(use-package! editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
