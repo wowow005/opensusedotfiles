@@ -3,3 +3,6 @@
 neofetch
 
 eval "$(gh completion -s zsh)"
+
+# Created by `pipx` on 2022-09-02 06:31:35
+export PATH="$PATH:/Users/mushi007/.local/bin"

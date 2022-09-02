@@ -42,6 +42,9 @@
 (add-to-list 'default-frame-alist '(width . 150))
 (add-to-list 'default-frame-alist '(height . 50))
 
+;; Display fill column
+;; (setq fill-column 120)
+
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
@@ -65,6 +68,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
+(require 'org)
+(setq org-clock-sound "~/MEGA/org/clock.wav")
 (setq org-directory "~/MEGA/org/")
 
 
@@ -112,8 +117,10 @@
 
 ;; Org-download
 (use-package! org-download
+  :ensure t
   :init
   (setq-default org-download-method 'directory)
+  :config
   (setq-default org-download-image-dir "./img")
   (setq-default org-download-heading-lvl 'nil)
   )

@@ -47,3 +47,6 @@ eval "$(starship init zsh)"
 
 # Generated for envman. Do not edit.
 # [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# Created by `pipx` on 2022-09-02 06:31:35
+export PATH="$PATH:/Users/mushi007/.local/bin"
