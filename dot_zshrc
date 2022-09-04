@@ -1,7 +1,4 @@
 #!/bin/zsh
-# OS-X
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -45,8 +42,23 @@ bindkey ',' autosuggest-accept
 # Starship Prompt
 eval "$(starship init zsh)"
 
-# Generated for envman. Do not edit.
-# [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+# For Emacs Vterm's shell-side configuration
+vterm_printf(){
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
+# Alias
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias ls='exa'
+alias e='emacsclient -a "" -c -n "$@"'
 
 # Created by `pipx` on 2022-09-02 06:31:35
 export PATH="$PATH:/Users/mushi007/.local/bin"

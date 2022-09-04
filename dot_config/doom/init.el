@@ -67,7 +67,7 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       dired             ; making dired pretty [functional]
+       (dired +icons)            ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
@@ -141,7 +141,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        (json+lsp)              ; At least it ain't XML
-       (java +lsp)       ; the poster child for carpal tunnel syndrome
+       ;; (java +lsp)       ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -177,7 +177,7 @@
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;web               ; the tubes
-       yaml              ; JSON, but readable
+       ;;yaml              ; JSON, but readable
        ;;zig               ; C, but simpler
 
        :email
@@ -191,7 +191,7 @@
        ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
-       ;;twitter           ; twitter client https://twitter.com/vnought
+       ;; twitter           ; twitter client https://twitter.com/vnought
 
        :config
        ;;literate

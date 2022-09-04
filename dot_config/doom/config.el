@@ -17,6 +17,15 @@
 ;;   presentations or streaming.
 ;; - `doom-unicode-font' -- for unicode glyphs
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
+;; See 'C-h v doom-font' for documentation and more examples of what they
+;; accept. For example:
+(setq doom-font (font-spec :family "Sarasa Mono SC Nerd" :size 18)
+      ;; doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13)
+      )
+;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
+;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
+;; refresh your font settings. If Emacs still can't find your font, it likely
+;; wasn't installed correctly. Font issues are rarely Doom issues!
 
 ;; Clock
 (after! doom-modeline
@@ -45,17 +54,6 @@
 ;; Display fill column
 ;; (setq fill-column 120)
 
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-(setq doom-font (font-spec :family "Sarasa Mono SC Nerd" :size 18)
-      ;; doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13)
-      )
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -71,6 +69,11 @@
 (require 'org)
 (setq org-clock-sound "~/MEGA/org/clock.wav")
 (setq org-directory "~/MEGA/org/")
+
+;; org-super-agenda
+;; (use-package! org-super-agenda
+;;   :init
+;;   (setq org-super-agenda-mode 1))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -117,7 +120,6 @@
 
 ;; Org-download
 (use-package! org-download
-  :ensure t
   :init
   (setq-default org-download-method 'directory)
   :config
@@ -127,6 +129,12 @@
 
 ;; Editorconfig
 (use-package! editorconfig
-  :ensure t
   :config
   (editorconfig-mode 1))
+
+;; Projectile
+;; (use-package! projectile
+;;   :ensure t
+;;   :config
+;;   (setq projectile-mode-line "Projectile")
+;;   (setq projectile-track-known-projects-automatically nil))

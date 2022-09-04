@@ -1,11 +1,11 @@
-# key: <note.org
-# name: Note.org
+# key: <org.note
+# name: org.note
 # --
-#+OPTIONS: author:nil ^:{}
-#+DATE: `(format-time-string "[%Y-%m-%d %a %H:%M]")`
-#+EMAIL: goodhelper005@gmail.com
-#+LATEX_COMPILER: xelatex
-#+LATEX_HEADER: \usepackage{xeCJK}
-#+OPTIONS: prop:t
-#+TITLE: $0
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+title: $0
+#+author:mushi
+#+date: `(format-time-string "[%Y-%m-%d %a %H:%M]")`
+#+email: goodhelper005@gmail.com
+#+latex_compiler: xelatex
+#+latex_header: \usepackage{xecjk}
+#+options: prop:t
+#+setupfile: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup

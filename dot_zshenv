@@ -3,8 +3,16 @@
 case "$(uname -s)" in
     Darwin)
         eval "$(/opt/homebrew/bin/brew shellenv)"
+        export PATH="/opt/homebrew/bin:$PATH"
+        export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
         ;;
     Linux)
+        # Scaling
+        export QT_AUTO_SCREEN_SCALE_FACTOR=0
+        export QT_SCALE_FACTOR=1
+        export QT_SCREEN_SCALE_FACTORS="1;1;1"
+        export GDK_SCALE=1
+        export GDK_DPI_SCALE=1
         ;;
     CYGWIN* | MINGW32* | MSYS* | MINGW*)
         ;;
@@ -38,16 +46,20 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 # export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 # export ZDOTDIR=$HOME/.config/zsh
-# export HISTFILE="$XDG_DATA_HOME"/zsh/history
+export HISTFILE="$XDG_DATA_HOME"/zsh/history
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
+export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
+export TERMINFO="$XDG_DATA_HOME"/terminfo
+export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+export GRIPHOME="$XDG_CONFIG_HOME/grip"
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+export GRIPHOME="$XDG_CONFIG_HOME/grip"
+export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
 
-# Scaling
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export QT_SCALE_FACTOR=1
-export QT_SCREEN_SCALE_FACTORS="1;1;1"
-export GDK_SCALE=1
-export GDK_DPI_SCALE=1
 
 # Default Apps
 export EDITOR="vim"
