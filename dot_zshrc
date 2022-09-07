@@ -59,6 +59,7 @@ vterm_printf(){
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 alias ls='exa'
 alias e='emacsclient -a "" -c -n "$@"'
+alias diff='icdiff'
 
 # Created by `pipx` on 2022-09-02 06:31:35
 export PATH="$PATH:/Users/mushi007/.local/bin"

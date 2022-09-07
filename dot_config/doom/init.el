@@ -155,6 +155,7 @@
        ;;ocaml             ; an objective camel
        (org               ; organize your plain life in plain text
         +pretty
+        +present
         +hugo
         +pandoc
         +roam2)

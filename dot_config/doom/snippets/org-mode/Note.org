@@ -6,6 +6,8 @@
 #+date: `(format-time-string "[%Y-%m-%d %a %H:%M]")`
 #+email: goodhelper005@gmail.com
 #+latex_compiler: xelatex
-#+latex_header: \usepackage{xecjk}
+#+latex_header: \usepackage{xeCJK}
+#+latex_header: \setCJKmainfont{LXGW WenKai}
 #+options: prop:t
 #+setupfile: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+description:
