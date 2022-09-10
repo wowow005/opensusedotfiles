@@ -1,5 +1,4 @@
-dot_DS_Store
-.DS_Store
-.Trashes
-Thumbs.db
-.Spotlight-V100
+**/dot_DS_Store
+**/.DS_Store
+**/.Trashes
+**/Thumbs.db
