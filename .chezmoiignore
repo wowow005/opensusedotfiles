@@ -1,3 +1,6 @@
+# This file include some ignore files(dir) on different machines
+# See Also: https://www.chezmoi.io/user-guide/manage-machine-to-machine-differences/
+
 # Not managed files
 README.org
 .DS_Store
@@ -6,5 +9,10 @@ README.org
 
 # Only manage on macOS
 {{- if ne .chezmoi.os "darwin" }}
+
+{{- end }}
+
+# Only manage on Linux
+{{- if ne .chezmoi.os "Linux" }}
 
 {{- end }}
