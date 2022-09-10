@@ -1,0 +1,10 @@
+# Not managed files
+README.org
+.DS_Store
+.Trashes
+.Spotlight-V100
+
+# Only manage on macOS
+{{- if ne .chezmoi.os "darwin" }}
+
+{{- end }}
