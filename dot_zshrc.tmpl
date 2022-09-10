@@ -12,6 +12,7 @@ HISTFILE=~/.cache/zsh/history
 
 autoload -U compinit && compinit -u
 zstyle ':completion:*' menu select
+
 # Auto complete with case insenstivity
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
@@ -25,19 +26,12 @@ bindkey -s "^h" "history 1\n"
 bindkey -s "^l" "clear\n"
 bindkey -s "^d" "dlfile\n"
 
-# Source configs
-# for f in ~/.config/shellconfig/*; do source "$f"; done
-#source /home/brodie/.config/broot/launcher/bash/br
-
-# Load zsh-syntax-highlighting
+# zsh-syntax-highlighting
 source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
-# Suggest aliases for commands
-# source ~/.local/share/zsh/plugins/zsh-you-shoud-use/you-should-use.plugin.zsh 2>/dev/null
-# Auto suggestions
+
+# auto suggestions
 source ~/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 bindkey ',' autosuggest-accept
-# Search repos for programs that can't be found
-# source /usr/share/doc/pkgfile/command-not-found.zsh 2>/dev/null
 
 # Starship Prompt
 eval "$(starship init zsh)"
@@ -56,10 +50,14 @@ vterm_printf(){
 }
 
 # Alias
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 alias ls='exa'
 alias e='emacsclient -a "" -c -n "$@"'
 alias diff='icdiff'
 
+{{ if eq .chezmoi.os "darwin" -}}
+# For macOS
 # Created by `pipx` on 2022-09-02 06:31:35
 export PATH="$PATH:/Users/mushi007/.local/bin"
+{{ else if eq .chezmoi.os "linux" -}}
+# For Linux
+{{ end -}}

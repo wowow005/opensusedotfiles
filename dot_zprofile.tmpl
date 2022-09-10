@@ -1,10 +1,11 @@
 #!/bin/zsh
-# Flex on the ubuntu users
-# neofetch
 
-# eval "$(gh completion -s zsh)"
-
-# Change to GUN grep on macOS
+{{ if eq .chezmoi.os "darwin" -}}
+# For macOS
 export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+
 # Created by `pipx` on 2022-09-02 06:31:35
 export PATH="$PATH:/Users/mushi007/.local/bin"
+{{ else if eq .chezmoi.os "linux" -}}
+# For Linux
+{{ end -}}
