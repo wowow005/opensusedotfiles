@@ -34,11 +34,13 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 
-;; Clock
+;; Clock FIXME
 (after! doom-modeline
   (setq display-time-string-forms
         '((propertize (concat " 🕘 " 24-hours ":" minutes))))
+  (setq all-the-icons-scale-factor 1.2)
   (display-time-mode 1)) ; Enable time in the mode-line
+
 
 ;; Battery
 (after! doom-modeline
@@ -73,14 +75,43 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/MEGA/org/")
+
+;; Latex
+;; (setq org-latex-pdf-process '("tectonic -Z shell-escape %f"))
+
 (after! org
-  (setq org-clock-sound 't)
-)
+  (setq org-latex-src-block-backend 'minted
+        org-latex-packages-alist '(("" "minted"))
+        org-latex-pdf-process
+        '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  )
+
+;; Latex preview
+(after! org(setq org-preview-latex-default-process 'xdvsvgm))
+(after! org
+  (add-to-list 'org-preview-latex-process-alist '(xdvsvgm :progams
+              ("xelatex" "dvisvgm")
+              :discription "xdv > svg"
+              :message "you need install the programs: xelatex and dvisvgm."
+              :image-input-type "xdv"
+              :image-output-type "svg"
+              :image-size-adjust (1.7 . 1.5)
+              :latex-compiler ("xelatex -interaction nonstopmode -no-pdf -output-directory %o %f")
+              :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 
 ;; org-super-agenda
-;; (use-package! org-super-agenda
-;;   :init
-;;   (setq org-super-agenda-mode 1))
+(use-package! org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-super-agenda-mode 1))
+
+;; org-reveal
+;; (use-package! ox-reveal
+;;   :ensure t
+;;   :config
+;;   (reveal-mode 1)
+;;   )
 
 ;; Projectile
 (setq projectile-ignored-projects '("~/" "/tmp" "~/.emacs.d/.local/straight/repos/"))
@@ -132,7 +163,6 @@
 
 ;; Org-download
 (use-package! org-download
-  :hook ((org-mode dired-mode) . org-download-enable)
   ;; :init
   :config
   (setq-default org-download-method 'directory)
@@ -145,28 +175,3 @@
 (use-package! editorconfig
   :config
   (editorconfig-mode 1))
-
-;; Keycast
-(use-package! keycast
-  :commands keycast-mode
-  :config
-  (define-minor-mode keycast-mode
-    "Show current command and its key binding in the mode line."
-    :global t
-    (if keycast-mode
-        (progn
-          (add-hook 'pre-command-hook 'keycast--update t)
-          (add-to-list 'global-mode-string '("" mode-line-keycast " ")))
-      (remove-hook 'pre-command-hook 'keycast--update)
-      (setq global-mode-string (remove '("" mode-line-keycast " ") global-mode-string))))
-  (custom-set-faces!
-    '(keycast-command :inherit doom-modeline-debug
-                      :height 0.9)
-    '(keycast-key :inherit custom-modified
-                  :height 1.1
-                  :weight bold)))
-
-(use-package! elcord
-  :commands elcord-mode
-  :config
-  (setq elcord-use-major-mode-as-main-icon t))

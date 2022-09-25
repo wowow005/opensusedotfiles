@@ -1,0 +1,4 @@
+# key: #+image
+# name: org.latex.image
+# --
+#+attr_latex: :width 0.8\textwidth

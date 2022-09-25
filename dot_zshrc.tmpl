@@ -10,21 +10,19 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.cache/zsh/history
 
-autoload -U compinit && compinit -u
-zstyle ':completion:*' menu select
+# autoload -U compinit && compinit -u
+# zstyle ':completion:*' menu select
+
+# bindkey 
+bindkey -e
 
 # Auto complete with case insenstivity
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+# zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
-zmodload zsh/complist
-compinit
-_comp_options+=(globdots)		# Include hidden files.
+# zmodload zsh/complist
+# compinit
+# _comp_options+=(globdots)		# Include hidden files.
 
-# Control bindings for programs
-bindkey -s "^g" "lc\n"
-bindkey -s "^h" "history 1\n"
-bindkey -s "^l" "clear\n"
-bindkey -s "^d" "dlfile\n"
 
 # zsh-syntax-highlighting
 source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
@@ -56,8 +54,10 @@ alias diff='icdiff'
 
 {{ if eq .chezmoi.os "darwin" -}}
 # For macOS
-# Created by `pipx` on 2022-09-02 06:31:35
 export PATH="$PATH:/Users/mushi007/.local/bin"
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+alias chrome='open -a "Google Chrome"'
 {{ else if eq .chezmoi.os "linux" -}}
 # For Linux
 {{ end -}}

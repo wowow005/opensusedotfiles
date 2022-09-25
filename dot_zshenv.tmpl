@@ -3,14 +3,7 @@
 {{ if eq .chezmoi.os "darwin" -}}
 # For macOS
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH="/opt/homebrew/bin:$PATH"
 {{ else if eq .chezmoi.os "linux" -}}
-# For Linux 
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export QT_SCALE_FACTOR=1
-export QT_SCREEN_SCALE_FACTORS="1;1;1"
-export GDK_SCALE=1
-export GDK_DPI_SCALE=1
 {{ end -}}
 
 # Other XDG paths
@@ -48,3 +41,4 @@ export VIDEO="mpv"
 
 # Doom Emacs
 export PATH="$HOME/.emacs.d/bin:$PATH"
+. "/Users/mushi007/.local/share/cargo/env"

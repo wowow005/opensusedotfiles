@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: org-src
+# key: <src
+# --
+#+attr_latex: :options frame=lines,breaklines
+#+begin_src $1 -n
+$0
+#+end_src
