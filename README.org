@@ -10,3 +10,4 @@ This is a personal configuration, for reference only.
 
 * About
 Managed by [[https://www.chezmoi.io/][chezmoi]].
+
