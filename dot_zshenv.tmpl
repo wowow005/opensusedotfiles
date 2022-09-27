@@ -3,6 +3,7 @@
 {{ if eq .chezmoi.os "darwin" -}}
 # For macOS
 eval "$(/opt/homebrew/bin/brew shellenv)"
+GPG_TTY=$(tty)
 {{ else if eq .chezmoi.os "linux" -}}
 {{ end -}}
 
