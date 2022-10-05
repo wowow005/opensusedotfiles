@@ -1,2 +1,12 @@
 # Reresh DNS
 sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+
+# Finder Setting
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
+
+# QQ&WeChat Phonetic problem
+printf "p *(char*)(void(*)())AudioDeviceDuck=0xc3\nq" | lldb -n WeChat
+printf "p *(char*)(void(*)())AudioDeviceDuck=0xc3\nq" | lldb -n QQ
+
+
